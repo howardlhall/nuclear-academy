@@ -1,0 +1,274 @@
+---
+import Base from '../../layouts/Base.astro';
+import Method from '../../content/tools/decay-chain-method.md';
+---
+<Base title="Decay-chain calculator" description="Bateman-equation solutions for radioactive decay networks with branching, from ENSDF data, computed in your browser.">
+  <div class="kicker">Tool</div>
+  <h1>Decay-chain calculator</h1>
+  <p class="lede">Pick a nuclide, set how much and how long, and watch the whole network of daughters grow and decay — branching ratios, isomers, and all. Everything runs in your browser from the ENSDF evaluated data.</p>
+
+  <section class="dc-controls card" aria-labelledby="dc-setup">
+    <h2 id="dc-setup" class="visually-hidden">Set up</h2>
+    <div class="dc-row">
+      <label>Starting nuclide
+        <input id="dc-nuclide" list="dc-list" placeholder="e.g. U-238, Mo-99, Cs-137" autocomplete="off" spellcheck="false" />
+        <datalist id="dc-list"></datalist>
+      </label>
+      <label>Amount
+        <span class="dc-inline"><input id="dc-amount" type="number" value="1" min="0" step="any" /><select id="dc-unit"><option value="Bq">Bq</option><option value="kBq">kBq</option><option value="MBq">MBq</option><option value="GBq">GBq</option><option value="Ci">Ci</option><option value="mCi">mCi</option><option value="g" selected>g</option><option value="mg">mg</option><option value="kg">kg</option><option value="mol">mol</option><option value="atoms">atoms</option></select></span>
+      </label>
+      <label>Time span
+        <span class="dc-inline"><input id="dc-span" type="number" value="10" min="0" step="any" /><select id="dc-tunit"><option value="s">s</option><option value="min">min</option><option value="h">h</option><option value="d">d</option><option value="y" selected>y</option></select></span>
+      </label>
+    </div>
+    <div class="dc-row dc-presets" role="group" aria-label="Featured chains">
+      <span class="meta">Featured:</span>
+      <button type="button" data-preset="U-238|1|g|1e10|y">U-238 series</button>
+      <button type="button" data-preset="Th-232|1|g|1e10|y">Th-232 series</button>
+      <button type="button" data-preset="U-235|1|g|1e9|y">U-235 series</button>
+      <button type="button" data-preset="Ra-226|1|g|100|y">Ra-226 progeny</button>
+      <button type="button" data-preset="Rn-222|1|kBq|30|d">Rn-222</button>
+      <button type="button" data-preset="Mo-99|1|GBq|10|d">Mo-99 / Tc-99m generator</button>
+      <button type="button" data-preset="Cs-137|1|GBq|30|min">Cs-137 / Ba-137m</button>
+      <button type="button" data-preset="Sr-90|1|GBq|30|d">Sr-90 / Y-90</button>
+      <button type="button" data-preset="I-135|1|GBq|3|d">I-135 → Xe-135 (fission poison)</button>
+      <button type="button" data-preset="Bi-212|1|MBq|10|h">Bi-212 (α/β branch)</button>
+      <button type="button" data-preset="K-40|1|g|1e10|y">K-40 (β⁻/ε branch)</button>
+    </div>
+    <div class="dc-row dc-options">
+      <label><span class="meta">Plot</span> <select id="dc-quantity"><option value="A">Activity (Bq)</option><option value="N">Atoms</option><option value="m">Mass (g)</option></select></label>
+      <label><input id="dc-logt" type="checkbox" checked /> log time</label>
+      <label><input id="dc-logy" type="checkbox" checked /> log scale</label>
+      <button type="button" id="dc-run" class="btn">Explore</button>
+      <button type="button" id="dc-csv" class="dc-secondary">Download CSV</button>
+    </div>
+    <p id="dc-status" class="meta" aria-live="polite">Loading nuclide data…</p>
+  </section>
+
+  <figure class="dc-figure">
+    <div id="dc-plot" class="dc-plot" role="img" aria-label="Plot of the selected quantity against time for each nuclide in the network"></div>
+    <div id="dc-legend" class="dc-legend" aria-label="Series legend"></div>
+    <figcaption id="dc-caption" class="meta"></figcaption>
+  </figure>
+
+  <section aria-labelledby="dc-table-h">
+    <h2 id="dc-table-h">Inventory at <span id="dc-t-label">the end of the span</span></h2>
+    <p class="meta">Drag to read the network at any time. <input id="dc-t" type="range" min="0" max="1000" value="1000" style="width:min(100%,32rem)" aria-label="Time selector" /></p>
+    <div class="dc-tablewrap"><table id="dc-table"><thead><tr><th>Nuclide</th><th>Half-life</th><th>Decays to</th><th>Atoms</th><th>Activity (Bq)</th><th>Mass (g)</th></tr></thead><tbody></tbody></table></div>
+    <p id="dc-notes" class="meta"></p>
+  </section>
+
+  <section aria-labelledby="dc-chain-h">
+    <h2 id="dc-chain-h">The network</h2>
+    <div id="dc-chain" class="prose dc-chain"></div>
+  </section>
+
+  <section class="prose" aria-labelledby="dc-method-h">
+    <h2 id="dc-method-h">How it is computed</h2>
+    <Method />
+  </section>
+</Base>
+
+<style is:global>
+  .visually-hidden { position:absolute; left:-9999px; }
+  .dc-controls { margin-top: 1.5rem; }
+  .dc-row { display:flex; flex-wrap:wrap; gap:1rem 1.6rem; align-items:flex-end; margin-bottom:.9rem; font-family: var(--sans); font-size:.95rem; }
+  .dc-row label { display:flex; flex-direction:column; gap:.3rem; font-weight:600; }
+  .dc-inline { display:inline-flex; gap:.4rem; }
+  .dc-controls input[type=text], .dc-controls input[list], .dc-controls input[type=number], .dc-controls select {
+    font: inherit; font-weight:400; padding:.45rem .6rem; border:1px solid var(--rule-soft); background: var(--paper); color: var(--ink); border-radius:2px; min-height:44px; }
+  .dc-controls input[type=number] { width: 8rem; }
+  .dc-controls input[list] { width: 16rem; max-width: 100%; }
+  .dc-presets button, .dc-secondary { font: inherit; font-family: var(--sans); font-size:.85rem; font-weight:600; min-height:44px; padding:.4rem .8rem; background: var(--paper); color: var(--ink); border:1px solid var(--rule-soft); border-radius:2px; cursor:pointer; }
+  .dc-presets button:hover, .dc-secondary:hover { border-color: var(--ink); }
+  .dc-options label { flex-direction:row; align-items:center; gap:.5rem; font-weight:400; }
+  .dc-options .btn { border:0; cursor:pointer; }
+  .dc-figure { margin: 1.5rem 0; }
+  .dc-plot svg { width:100%; height:auto; display:block; background: var(--card); border:1px solid var(--rule); }
+  .dc-legend { display:flex; flex-wrap:wrap; gap:.3rem .9rem; margin-top:.6rem; font-family: var(--sans); font-size:.85rem; }
+  .dc-legend button { font: inherit; background:none; border:0; padding:.3rem .2rem; cursor:pointer; color: var(--ink); display:inline-flex; align-items:center; gap:.4rem; min-height:32px; }
+  .dc-legend button[aria-pressed="false"] { opacity:.4; text-decoration: line-through; }
+  .dc-legend .sw { width:16px; height:3px; display:inline-block; }
+  .dc-tablewrap { overflow-x:auto; }
+  #dc-table td:nth-child(n+4) { font-variant-numeric: tabular-nums; text-align:right; }
+  #dc-table tr.dc-dim td { color: var(--muted); }
+  .dc-chain ul { list-style:none; padding-left:1.2rem; }
+  .dc-chain li { margin:.15rem 0; }
+  .dc-chain .b { font-family: var(--sans); font-size:.85rem; color: var(--muted); }
+  .dc-chain .src { font-family: var(--sans); font-size:.78rem; color: var(--muted); }
+</style>
+
+<script>
+  import { solve, activities, LN2, AVOGADRO, TIME_UNITS, formatHalfLife } from '../../lib/decay.js';
+
+  const $ = (id) => document.getElementById(id);
+  const status = $('dc-status');
+  let table = null, keys = [], last = null;
+
+  const PALETTE = ['#1c1a17', '#8a2b1d', '#1f4e79', '#2f5d3a', '#b8860b', '#6a3d9a', '#c2410c', '#0e7490', '#7c2d12', '#4b5563', '#9d174d', '#365314'];
+  const CI = 3.7e10;
+
+  fetch('/data/nuclides.json').then((r) => r.json()).then((d) => {
+    table = d.nuclides; keys = Object.keys(table).sort();
+    const dl = $('dc-list'); const frag = document.createDocumentFragment();
+    for (const k of keys) { if (table[k].stable) continue; const o = document.createElement('option'); o.value = k; o.label = `${k} · ${table[k].t12_str}`; frag.appendChild(o); }
+    dl.appendChild(frag);
+    status.textContent = `${keys.length.toLocaleString()} nuclear states from ENSDF (${d.meta.distribution.replace('ensdf_', '20').replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')}). Choose a nuclide or a featured chain.`;
+    // default: the home-page example
+    applyPreset('Mo-99|1|GBq|10|d'); run();
+  }).catch((e) => { status.textContent = 'Could not load nuclide data: ' + e.message; });
+
+  function applyPreset(p) {
+    const [k, amt, unit, span, tunit] = p.split('|');
+    $('dc-nuclide').value = k; $('dc-amount').value = amt; $('dc-unit').value = unit; $('dc-span').value = span; $('dc-tunit').value = tunit;
+  }
+  document.querySelectorAll('[data-preset]').forEach((b) => b.addEventListener('click', () => { applyPreset(b.dataset.preset); run(); }));
+  $('dc-run').addEventListener('click', run);
+  ['dc-quantity', 'dc-logt', 'dc-logy'].forEach((id) => $(id).addEventListener('change', () => { if (last) draw(); }));
+  $('dc-t').addEventListener('input', () => { if (last) renderTable(); });
+  $('dc-csv').addEventListener('click', downloadCsv);
+  $('dc-nuclide').addEventListener('keydown', (e) => { if (e.key === 'Enter') run(); });
+
+  function toAtoms(v, unit, e) {
+    const t12 = e.t12;
+    switch (unit) {
+      case 'atoms': return v;
+      case 'mol': return v * AVOGADRO;
+      case 'g': return (v / e.a) * AVOGADRO;
+      case 'mg': return (v * 1e-3 / e.a) * AVOGADRO;
+      case 'kg': return (v * 1e3 / e.a) * AVOGADRO;
+      case 'Bq': return (v * t12) / LN2;
+      case 'kBq': return (v * 1e3 * t12) / LN2;
+      case 'MBq': return (v * 1e6 * t12) / LN2;
+      case 'GBq': return (v * 1e9 * t12) / LN2;
+      case 'Ci': return (v * CI * t12) / LN2;
+      case 'mCi': return (v * 1e-3 * CI * t12) / LN2;
+    }
+    return v;
+  }
+
+  function run() {
+    if (!table) return;
+    const k = $('dc-nuclide').value.trim();
+    const e = table[k];
+    if (!e) { status.textContent = `"${k}" is not in the table. Use the form El-A (e.g. Cs-137) or El-Am for an isomer (Tc-99m).`; return; }
+    if (e.stable) { status.textContent = `${k} is stable — nothing to decay.`; return; }
+    const amt = parseFloat($('dc-amount').value) || 0;
+    const N0 = toAtoms(amt, $('dc-unit').value, e);
+    const tunit = $('dc-tunit').value; const span = (parseFloat($('dc-span').value) || 0) * TIME_UNITS[tunit];
+    if (!(N0 > 0) || !(span > 0)) { status.textContent = 'Amount and time span must be positive.'; return; }
+    const logt = $('dc-logt').checked;
+    const n = 500; const times = [];
+    if (logt) { const t0 = span * 1e-9; for (let i = 0; i <= n; i++) times.push(t0 * Math.pow(span / t0, i / n)); times[0] = 0; }
+    else for (let i = 0; i <= n; i++) times.push((span * i) / n);
+    const res = solve(table, { [k]: N0 }, times);
+    last = { k, N0, span, tunit, times, res, A: activities(res) };
+    status.textContent = `${k}: ${res.order.length} nuclides in the network (${res.order.filter((q) => !table[q].stable).length} radioactive).`;
+    draw(); renderTable(); renderChain();
+  }
+
+  function seriesValues(q) {
+    const { res, A } = last;
+    return res.order.map((k, i) => {
+      if (q === 'A') return A.map((row) => row[i]);
+      if (q === 'm') return res.N.map((row) => (row[i] * table[k].a) / AVOGADRO);
+      return res.N.map((row) => row[i]);
+    });
+  }
+
+  function draw() {
+    const q = $('dc-quantity').value; const logt = $('dc-logt').checked; const logy = $('dc-logy').checked;
+    const { res, times, tunit } = last; const vals = seriesValues(q);
+    const hidden = new Set(JSON.parse($('dc-legend').dataset.hidden || '[]'));
+    // rank series by peak, show top 12 by default
+    const peaks = vals.map((v, i) => ({ i, p: Math.max(...v) }));
+    const active = res.order.map((k, i) => (q === 'A' ? !table[k].stable : true) && peaks[i].p > 0);
+    const shown = peaks.filter((x) => active[x.i]).sort((a, b) => b.p - a.p).map((x) => x.i);
+    const defaultVisible = new Set(shown.slice(0, 12));
+    const W = 960, H = 460, L = 78, R = 20, T = 18, B = 52;
+    const tf = TIME_UNITS[tunit];
+    const xs = times.map((t) => t / tf);
+    const xmin = logt ? Math.max(xs[1], xs[xs.length - 1] * 1e-9) : 0, xmax = xs[xs.length - 1];
+    const X = (x) => L + ((logt ? (Math.log10(Math.max(x, xmin)) - Math.log10(xmin)) / (Math.log10(xmax) - Math.log10(xmin)) : x / xmax)) * (W - L - R);
+    let ymax = 0, ymin = Infinity;
+    for (const i of shown) for (const v of vals[i]) { if (v > ymax) ymax = v; if (v > 0 && v < ymin) ymin = v; }
+    if (!(ymax > 0)) return;
+    if (logy) { ymin = Math.max(ymin, ymax * 1e-12); ymin = Math.pow(10, Math.floor(Math.log10(ymin))); ymax = Math.pow(10, Math.ceil(Math.log10(ymax))); } else { ymin = 0; }
+    const Y = (y) => T + (1 - (logy ? (Math.log10(Math.max(y, ymin)) - Math.log10(ymin)) / (Math.log10(ymax) - Math.log10(ymin)) : y / ymax)) * (H - T - B);
+    const fmt = (v) => (v === 0 ? '0' : Math.abs(v) >= 1e4 || Math.abs(v) < 1e-2 ? v.toExponential(0).replace('e+', 'e') : (+v.toPrecision(3)).toString());
+    let g = '';
+    // grid & axes
+    const yt = []; if (logy) { for (let p = Math.log10(ymin); p <= Math.log10(ymax) + 1e-9; p += Math.max(1, Math.round((Math.log10(ymax) - Math.log10(ymin)) / 8))) yt.push(Math.pow(10, p)); } else { for (let i = 0; i <= 5; i++) yt.push((ymax * i) / 5); }
+    for (const y of yt) g += `<line x1="${L}" x2="${W - R}" y1="${Y(y)}" y2="${Y(y)}" stroke="var(--rule-soft)" /><text x="${L - 8}" y="${Y(y) + 4}" text-anchor="end" font-size="12" fill="var(--muted)" font-family="Source Sans 3, sans-serif">${fmt(y)}</text>`;
+    const xt = []; if (logt) { for (let p = Math.ceil(Math.log10(xmin)); p <= Math.log10(xmax) + 1e-9; p++) xt.push(Math.pow(10, p)); } else { for (let i = 0; i <= 5; i++) xt.push((xmax * i) / 5); }
+    for (const x of xt) g += `<line y1="${T}" y2="${H - B}" x1="${X(x)}" x2="${X(x)}" stroke="var(--rule-soft)" /><text y="${H - B + 18}" x="${X(x)}" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Source Sans 3, sans-serif">${fmt(x)}</text>`;
+    g += `<line x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}" stroke="var(--ink)" /><line x1="${L}" x2="${L}" y1="${T}" y2="${H - B}" stroke="var(--ink)" />`;
+    g += `<text x="${(L + W - R) / 2}" y="${H - 8}" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="Source Sans 3, sans-serif">time / ${tunit}${logt ? ' (log)' : ''}</text>`;
+    g += `<text transform="translate(16 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle" font-size="13" fill="var(--ink)" font-family="Source Sans 3, sans-serif">${q === 'A' ? 'activity / Bq' : q === 'm' ? 'mass / g' : 'atoms'}${logy ? ' (log)' : ''}</text>`;
+    // series
+    const legend = [];
+    shown.forEach((i, rank) => {
+      const k = res.order[i]; const col = PALETTE[rank % PALETTE.length]; const vis = !hidden.has(k) && (defaultVisible.has(i) || hidden.size > 0 && !hidden.has(k) && $('dc-legend').dataset.touched);
+      const visible = $('dc-legend').dataset.touched ? !hidden.has(k) : defaultVisible.has(i);
+      legend.push({ k, col, visible });
+      if (!visible) return;
+      let d = '', pen = false;
+      vals[i].forEach((v, j) => { const x = xs[j]; if (v <= 0 || (logt && x <= 0)) { pen = false; return; } d += `${pen ? 'L' : 'M'}${X(x).toFixed(1)},${Y(v).toFixed(1)} `; pen = true; });
+      g += `<path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-dasharray="${rank >= PALETTE.length ? '6 4' : 'none'}"><title>${k}</title></path>`;
+    });
+    $('dc-plot').innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+    const lg = $('dc-legend'); lg.innerHTML = '';
+    for (const { k, col, visible } of legend) {
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(visible));
+      b.innerHTML = `<span class="sw" style="background:${col}"></span>${k}`;
+      b.addEventListener('click', () => { const h = new Set(JSON.parse(lg.dataset.hidden || '[]')); if (!lg.dataset.touched) { lg.dataset.touched = '1'; for (const L2 of legend) if (!L2.visible) h.add(L2.k); } if (h.has(k)) h.delete(k); else h.add(k); lg.dataset.hidden = JSON.stringify([...h]); draw(); });
+      lg.appendChild(b);
+    }
+    $('dc-caption').textContent = `${last.k}, ${$('dc-amount').value} ${$('dc-unit').value} at t = 0. ${shown.length} nuclides with nonzero ${q === 'A' ? 'activity' : 'inventory'}; the ${Math.min(12, shown.length)} largest are shown by default — use the legend to toggle.`;
+  }
+
+  function renderTable() {
+    const { res, A, times, tunit } = last;
+    const idx = Math.round((parseInt($('dc-t').value, 10) / 1000) * (times.length - 1));
+    const t = times[idx]; $('dc-t-label').textContent = `t = ${(+(t / TIME_UNITS[tunit]).toPrecision(4))} ${tunit}`;
+    const tb = $('dc-table').querySelector('tbody'); tb.innerHTML = '';
+    const rows = res.order.map((k, i) => ({ k, i, N: res.N[idx][i], A: A[idx][i] })).sort((a, b) => b.A - a.A || b.N - a.N);
+    const f = (v) => (v === 0 ? '0' : v.toPrecision(4).replace(/e\+?/, 'e'));
+    for (const r of rows) {
+      const e = table[r.k];
+      const to = (e.tr || []).filter((x) => x.f > 0).map((x) => `${x.to ?? (x.m === 'SF' ? 'fission' : '?')} (${x.m}${x.f < 0.9995 ? ', ' + (x.f * 100).toPrecision(3) + ' %' : ''})`).join('; ') || '—';
+      const tr = document.createElement('tr'); if (r.N === 0) tr.className = 'dc-dim';
+      tr.innerHTML = `<td><span title="${e.src}">${r.k}</span></td><td>${e.stable ? 'stable' : e.t12_str}</td><td>${to}</td><td>${f(r.N)}</td><td>${e.stable ? '—' : f(r.A)}</td><td>${f((r.N * e.a) / AVOGADRO)}</td>`;
+      tb.appendChild(tr);
+    }
+    const sinks = Object.entries(res.sinks).filter(([, v]) => v[idx] > 0).map(([k, v]) => `${k}: ${f(v[idx])} nuclei`).join('; ');
+    $('dc-notes').textContent = [sinks && `Removed from the network — ${sinks}.`, ...res.notes].filter(Boolean).join(' ');
+  }
+
+  function renderChain() {
+    const { res } = last; const seen = new Set();
+    function node(k, depth) {
+      const e = table[k]; const first = !seen.has(k); seen.add(k);
+      let s = `<li><strong>${k}</strong> <span class="b">${e.stable ? 'stable' : 'T½ ' + e.t12_str}</span>`;
+      if (first && !e.stable && e.tr && e.tr.length) {
+        s += '<ul>';
+        for (const t of e.tr) { if (!(t.f > 0)) continue; s += `<li><span class="b">${t.m} ${(t.f * 100).toPrecision(t.f < 0.001 ? 2 : 4)} % →</span> `; s += t.to && table[t.to] ? node(t.to, depth + 1).replace(/^<li>/, '').replace(/<\/li>$/, '') : `<em>${t.m === 'SF' ? 'fission fragments' : 'not in table'}</em>`; s += '</li>'; }
+        s += '</ul>';
+      } else if (!first) s += ' <span class="b">(see above)</span>';
+      if (first) s += `<div class="src">${e.src}</div>`;
+      return s + '</li>';
+    }
+    $('dc-chain').innerHTML = `<ul>${node(last.k, 0)}</ul>`;
+  }
+
+  function downloadCsv() {
+    if (!last) return;
+    const { res, A, times, tunit, k } = last;
+    const head = ['time_s', `time_${tunit}`, ...res.order.flatMap((q) => [`${q}_atoms`, `${q}_Bq`])];
+    const lines = [head.join(',')];
+    times.forEach((t, j) => lines.push([t, t / TIME_UNITS[tunit], ...res.order.flatMap((q, i) => [res.N[j][i], A[j][i]])].join(',')));
+    lines.push(`# nuclear.academy decay-chain calculator; start ${k} ${$('dc-amount').value} ${$('dc-unit').value}; data ENSDF; CC BY-NC-ND 4.0`);
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `decay_${k}.csv`; a.click(); URL.revokeObjectURL(a.href);
+  }
+</script>

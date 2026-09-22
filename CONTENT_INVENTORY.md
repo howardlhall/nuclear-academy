@@ -8,7 +8,7 @@ read, CI screen logged) → `live` (merged to `main`). Sources column lists sour
 | `/` | Home | page | draft | — | HLH | — |
 | `/about` | About | page | draft | — | HLH | — |
 | `/modules/nuclear-security-why-it-matters` | Module 1: Nuclear Security — Why It Matters | module | draft (stub) | — | HLH | — |
-| `/tools/decay-chain` | Bateman decay-chain calculator | tool | draft (stub) | — | assistant | — |
-| `/tools/facilities-map` | Facilities map (first cut) | tool | draft (stub) | — | assistant | — |
+| `/tools/decay-chain` | Decay-chain calculator (branched Bateman network, ENSDF data) | tool | draft — built 2026-09-22, tests pass, on `dev` | ENSDF ensdf_260901 (DOI 10.18139/nndc.ensdf/1845010); Bateman 1910 | assistant | — |
+| `/atlas` | Facilities atlas (first cut) | tool | draft (stub) | — | assistant | — |
 | `/glossary` | Glossary | index | draft | — | researcher | — |
 | `/sources` | Source library | index | draft | — | researcher | — |
