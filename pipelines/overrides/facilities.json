@@ -1,0 +1,4 @@
+[
+  {"id": "Q896093", "exclude": true, "reason": "Wikidata classes Leitmeritz (Litoměřice) concentration camp as a deep geological repository; it is not a nuclear facility. CI screen 2026-09-22."},
+  {"id": "Q757565", "stage": "enrichment", "class": "uranium enrichment plant", "reason": "Fordow is an enrichment plant; Wikidata carries it only under the generic 'nuclear facility' class. CI screen 2026-09-22."}
+]

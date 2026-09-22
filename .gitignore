@@ -13,3 +13,6 @@ npm-debug.log*
 !.env.example
 # editor
 .vscode/
+# phantom sync directories the bridge cannot delete; trash in Finder
+_ghost_*/
+site_preview.tgz

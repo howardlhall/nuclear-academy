@@ -1,0 +1,48 @@
+---
+/* The two routes to weapons-usable material — stated at the level of the public record (IAEA, NRC, NAS, textbooks). */
+const W = 1180, H = 480;
+const box = (x, y, w, h, title, sub, accent = false) => `
+  <g>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="var(--card)" stroke="${accent ? 'var(--accent)' : 'var(--ink)'}" stroke-width="${accent ? 2 : 1.5}"/>
+    <text x="${x + w / 2}" y="${y + 26}" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15" font-weight="600" fill="var(--ink)">${title}</text>
+    <text x="${x + w / 2}" y="${y + 46}" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--muted)">${sub}</text>
+  </g>`;
+const arrow = (x1, y1, x2, y2, label = '') => `
+  <path d="M${x1},${y1} L${x2},${y2}" fill="none" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ah2)"/>
+  ${label ? `<text x="${(x1 + x2) / 2}" y="${(y1 + y2) / 2 - 8}" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--muted)">${label}</text>` : ''}`;
+const bw = 170, bh = 62, gap = 22;
+const x = (i) => 20 + i * (bw + gap);
+const yU = 70, yPu = 250;
+---
+<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="fc-w-title fc-w-desc" style="width:100%;height:auto;display:block">
+  <title id="fc-w-title">The two routes to weapons-usable material</title>
+  <desc id="fc-w-desc">Both routes share the civil front end of mining and conversion. The uranium route continues enrichment well past reactor grade to highly enriched uranium, which is converted to metal. The plutonium route irradiates natural or low-enriched uranium briefly in a reactor and then reprocesses the fuel to separate plutonium, which is converted to metal. Either material then requires weaponization, which is outside the fuel cycle.</desc>
+  <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+  <text x={x(2)} y={yU - 14} font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="var(--accent)">URANIUM ROUTE</text>
+  <text x={x(2)} y={yPu + bh + 20} font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="var(--accent)">PLUTONIUM ROUTE</text>
+  <Fragment set:html={
+    /* shared front end (drawn once, spanning both rows) */
+    box(x(0), (yU + yPu) / 2, bw, bh, 'Mining & milling', 'the same ore and mills') +
+    box(x(1), (yU + yPu) / 2, bw, bh, 'Conversion', 'to UF₆, UO₂, or metal') +
+    arrow(x(0) + bw, (yU + yPu) / 2 + bh / 2, x(1), (yU + yPu) / 2 + bh / 2) +
+    /* uranium route */
+    arrow(x(1) + bw, (yU + yPu) / 2 + 10, x(2), yU + bh / 2 + 6) +
+    box(x(2), yU, bw, bh, 'Enrichment', 'carried to ≥ 90 % U-235', true) +
+    box(x(3), yU, bw, bh, 'HEU metal', 'conversion and casting') +
+    arrow(x(2) + bw, yU + bh / 2, x(3), yU + bh / 2) +
+    /* plutonium route */
+    arrow(x(1) + bw, (yU + yPu) / 2 + bh - 10, x(2), yPu + bh / 2 - 6) +
+    box(x(2), yPu, bw, bh, 'Production reactor', 'natural/LEU fuel, brief run') +
+    box(x(3), yPu, bw, bh, 'Reprocessing', 'separates plutonium', true) +
+    box(x(4), yPu, bw, bh, 'Pu metal', 'conversion and casting') +
+    arrow(x(2) + bw, yPu + bh / 2, x(3), yPu + bh / 2) +
+    arrow(x(3) + bw, yPu + bh / 2, x(4), yPu + bh / 2) +
+    /* convergence */
+    box(x(5), (yU + yPu) / 2, bw, bh, 'Weaponization', 'outside the fuel cycle') +
+    arrow(x(3) + bw, yU + bh / 2, x(5), (yU + yPu) / 2 + 10) +
+    arrow(x(4) + bw, yPu + bh / 2, x(5), (yU + yPu) / 2 + bh - 10)
+  } />
+  <text x="20" y="380" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="var(--muted)">The front end is identical to the civil cycle. The routes diverge at exactly the two steps the civil diagram marks: how far enrichment is carried, and whether plutonium is separated.</text>
+  <text x="20" y="401" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="var(--muted)">Neither route is depicted below the level of public overview; the IAEA’s significant quantities — 25 kg of U-235 in HEU, 8 kg of plutonium — are the reference amounts safeguards are designed to detect.</text>
+  <text x="20" y="435" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--muted)">Sources: IAEA Safeguards Glossary (2022 ed.), §§ 3.14, 4.24; U.S. NRC backgrounders on enrichment and reprocessing; National Academies, “Management and Disposition of Excess Weapons Plutonium” (1994), ch. 1.</text>
+</svg>

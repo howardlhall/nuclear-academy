@@ -1,8 +1,108 @@
 ---
 import Base from '../../layouts/Base.astro';
+import FuelCycleCivil from '../../components/atlas/FuelCycleCivil.astro';
+import FuelCycleWeapons from '../../components/atlas/FuelCycleWeapons.astro';
+import Explainer from '../../content/tools/atlas-explainer.md';
 ---
-<Base title="Atlas" description="The civil nuclear fuel cycle on a map, from public data sources.">
+<Base title="Atlas" description="The nuclear fuel cycle explained in two diagrams, and the world's civil nuclear facilities on a map, from public data.">
   <div class="kicker">Atlas</div>
-  <h1>The civil fuel cycle, on a map</h1>
-  <p class="lede">In preparation. Power and research reactors and fuel-cycle facilities from IAEA PRIS, RRDB and NFCIS, NRC and comparable public sources — each entry citing where it came from.</p>
+  <h1>The fuel cycle, and where it happens</h1>
+  <p class="lede">Two diagrams to read the map with — the civil cycle and the two routes to weapons material — then the facilities themselves, each entry linked to the public record it came from.</p>
+
+  <section aria-labelledby="fc-h1" class="section">
+    <h2 id="fc-h1">The civil (peaceful) fuel cycle</h2>
+    <figure style="margin:1rem 0 0"><div class="card" style="padding:.6rem"><FuelCycleCivil /></div></figure>
+    <details class="meta" style="margin-top:.6rem"><summary>Text version of the diagram</summary>
+      <ol><li>Mining and milling: ore to U₃O₈ (“yellowcake”).</li><li>Conversion: U₃O₈ to UF₆ gas.</li><li>Enrichment: 0.7 % to 3–5 % U-235 — safeguards-critical.</li><li>Fuel fabrication: UO₂ pellets into assemblies.</li><li>Power reactor: fission, heat, electricity.</li><li>Spent-fuel storage: pool, then dry cask.</li><li>Open cycle: geological disposal. Closed cycle: reprocessing (safeguards-critical) separates uranium and plutonium, which return to fuel fabrication as MOX or recycled fuel; fission products are vitrified as high-level waste.</li></ol></details>
+  </section>
+
+  <section aria-labelledby="fc-h2" class="section">
+    <h2 id="fc-h2">The two routes to weapons-usable material</h2>
+    <figure style="margin:1rem 0 0"><div class="card" style="padding:.6rem"><FuelCycleWeapons /></div></figure>
+    <details class="meta" style="margin-top:.6rem"><summary>Text version of the diagram</summary>
+      <p>Shared front end: mining and milling, conversion. Uranium route: enrichment continued to 90 % U-235 or more, then conversion to HEU metal. Plutonium route: natural or low-enriched fuel irradiated briefly in a production reactor, reprocessed to separate plutonium, then converted to metal. Both feed weaponization, which is outside the fuel cycle and not depicted. IAEA significant quantities: 25 kg U-235 in HEU; 8 kg plutonium.</p></details>
+    <div class="prose" style="margin-top:1.5rem"><Explainer /></div>
+  </section>
+
+  <section aria-labelledby="map-h" class="section">
+    <h2 id="map-h">Civil nuclear facilities</h2>
+    <p class="meta" id="atlas-status">Loading facilities…</p>
+    <div class="atlas-controls" role="group" aria-label="Filter by fuel-cycle stage">
+      <label><input type="checkbox" data-stage="reactor-power" checked /> Power reactors</label>
+      <label><input type="checkbox" data-stage="reactor-research" checked /> Research reactors</label>
+      <label><input type="checkbox" data-stage="enrichment" checked /> Enrichment</label>
+      <label><input type="checkbox" data-stage="reprocessing" checked /> Reprocessing</label>
+      <label><input type="checkbox" data-stage="mining" checked /> Mining</label>
+      <label><input type="checkbox" data-stage="disposal" checked /> Disposal</label>
+      <label>Country <input id="atlas-country" type="search" placeholder="filter by country" /></label>
+    </div>
+    <div id="atlas-map" class="atlas-map" role="region" aria-label="Interactive map of nuclear facilities. A table of the same entries follows."></div>
+    <p class="meta">Map tiles © <a href="https://openfreemap.org">OpenFreeMap</a>, © <a href="https://www.openmaptiles.org/">OpenMapTiles</a>, data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Facility data: Wikidata (CC0), each entry linked to its record.</p>
+    <details style="margin-top:1rem"><summary>Table view (all entries matching the filters)</summary>
+      <div class="dc-tablewrap"><table id="atlas-table"><thead><tr><th>Name</th><th>Stage</th><th>Country</th><th>Status</th><th>First operation</th><th>Source</th></tr></thead><tbody></tbody></table></div>
+    </details>
+    <h3>What this map is, and is not yet</h3>
+    <div class="prose">
+      <p>This is a first cut. Its facility list comes from Wikidata, which is complete for nuclear power stations, roughly half-complete for research reactors, and sparse for enrichment, reprocessing, mining and disposal sites. The authoritative registers — the IAEA's PRIS (power reactors), RRDB (research reactors) and NFCIS (fuel-cycle facilities), and the U.S. NRC's licensee lists — are the reconciliation sources, and each entry will carry its register identifier once that work is done. Military and defense-program facilities are deliberately not included in this cut — Wikidata's generic “nuclear facility” class, which mixes them in, is not used — and they will be added, if at all, as a separately reviewed layer drawn only from published compilations.</p>
+    </div>
+  </section>
 </Base>
+
+<style is:global>
+  .atlas-controls { display:flex; flex-wrap:wrap; gap:.5rem 1.2rem; align-items:center; font-family: var(--sans); font-size:.9rem; margin: .6rem 0 1rem; }
+  .atlas-controls label { display:inline-flex; align-items:center; gap:.4rem; min-height:32px; }
+  .atlas-controls input[type=search] { font: inherit; padding:.35rem .5rem; border:1px solid var(--rule-soft); background: var(--paper); color: var(--ink); border-radius:2px; min-height:40px; }
+  .atlas-map { width:100%; height: 560px; border:1px solid var(--rule); background: var(--card); }
+  @media (max-width:600px) { .atlas-map { height: 420px; } }
+  .dc-tablewrap { overflow-x:auto; }
+  .maplibregl-popup-content { font-family: var(--sans); font-size:.85rem; color:#1c1a17; }
+  .maplibregl-popup-content a { color:#8a2b1d; }
+</style>
+
+<script>
+  import maplibregl from 'maplibre-gl';
+  import 'maplibre-gl/dist/maplibre-gl.css';
+  const COLORS = { 'reactor-power': '#1c1a17', 'reactor-research': '#1f4e79', enrichment: '#8a2b1d', reprocessing: '#c2410c', mining: '#b8860b', disposal: '#2f5d3a' };
+  const LABEL = { 'reactor-power': 'Power reactor', 'reactor-research': 'Research reactor', enrichment: 'Enrichment', reprocessing: 'Reprocessing', mining: 'Mining', disposal: 'Disposal' };
+  const status = document.getElementById('atlas-status');
+  let data = null;
+  const map = new maplibregl.Map({ container: 'atlas-map', style: 'https://tiles.openfreemap.org/styles/positron', center: [10, 30], zoom: 1.4, attributionControl: false });
+  map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+  map.addControl(new maplibregl.AttributionControl({ compact: true }));
+
+  function activeStages() { return [...document.querySelectorAll('[data-stage]')].filter((c) => c.checked).map((c) => c.dataset.stage); }
+  function filtered() {
+    const st = new Set(activeStages()); const q = (document.getElementById('atlas-country').value || '').trim().toLowerCase();
+    return data.features.filter((f) => st.has(f.properties.stage) && (!q || (f.properties.country || '').toLowerCase().includes(q)));
+  }
+  function refresh() {
+    if (!data) return;
+    const fs = filtered();
+    if (map.getSource('fac')) map.getSource('fac').setData({ type: 'FeatureCollection', features: fs });
+    status.textContent = `${fs.length} of ${data.features.length} facilities shown · data retrieved ${data.meta.retrieved} from Wikidata (CC0).`;
+    const tb = document.querySelector('#atlas-table tbody'); tb.innerHTML = '';
+    for (const f of fs.slice().sort((a, b) => (a.properties.country || '').localeCompare(b.properties.country || '') || a.properties.name.localeCompare(b.properties.name))) {
+      const p = f.properties; const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${p.name}</td><td>${LABEL[p.stage]}</td><td>${p.country ?? ''}</td><td>${p.status ?? (p.closed ? 'closed ' + p.closed : '')}</td><td>${p.first_operation ?? ''}</td><td><a href="${p.source_url}">${p.id}</a></td>`;
+      tb.appendChild(tr);
+    }
+  }
+  async function loadData() {
+    const r = await fetch('/data/facilities.geojson'); data = await r.json();
+    document.querySelectorAll('[data-stage]').forEach((c) => c.addEventListener('change', refresh));
+    document.getElementById('atlas-country').addEventListener('input', refresh);
+    refresh();
+  }
+  map.on('load', () => {
+    map.addSource('fac', { type: 'geojson', data: { type: 'FeatureCollection', features: [] }, cluster: true, clusterRadius: 34, clusterMaxZoom: 6 });
+    map.addLayer({ id: 'clusters', type: 'circle', source: 'fac', filter: ['has', 'point_count'], paint: { 'circle-color': '#f6f2ea', 'circle-stroke-color': '#1c1a17', 'circle-stroke-width': 1.5, 'circle-radius': ['step', ['get', 'point_count'], 14, 10, 18, 50, 24] } });
+    map.addLayer({ id: 'cluster-count', type: 'symbol', source: 'fac', filter: ['has', 'point_count'], layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-size': 12 }, paint: { 'text-color': '#1c1a17' } });
+    map.addLayer({ id: 'points', type: 'circle', source: 'fac', filter: ['!', ['has', 'point_count']], paint: { 'circle-radius': 6, 'circle-color': ['match', ['get', 'stage'], ...Object.entries(COLORS).flat(), '#6b6560'], 'circle-stroke-color': '#f6f2ea', 'circle-stroke-width': 1.2 } });
+    map.on('click', 'clusters', (e) => { const f = map.queryRenderedFeatures(e.point, { layers: ['clusters'] })[0]; map.getSource('fac').getClusterExpansionZoom(f.properties.cluster_id).then((z) => map.easeTo({ center: f.geometry.coordinates, zoom: z })); });
+    map.on('click', 'points', (e) => { const p = e.features[0].properties; new maplibregl.Popup({ maxWidth: '280px' }).setLngLat(e.features[0].geometry.coordinates).setHTML(`<strong>${p.name}</strong><br>${LABEL[p.stage]}${p.country ? ' · ' + p.country : ''}${p.operator ? '<br>Operator: ' + p.operator : ''}${p.first_operation ? '<br>First operation: ' + p.first_operation : ''}${p.status ? '<br>Status: ' + p.status : ''}${p.closed ? '<br>Closed: ' + p.closed : ''}${p.capacity_mw ? '<br>Capacity: ' + p.capacity_mw + ' MW' : ''}<br><a href="${p.source_url}">Source: Wikidata ${p.id}</a>`).addTo(map); });
+    for (const l of ['clusters', 'points']) { map.on('mouseenter', l, () => (map.getCanvas().style.cursor = 'pointer')); map.on('mouseleave', l, () => (map.getCanvas().style.cursor = '')); }
+    if (data) refresh();
+  });
+  map.on('error', (e) => { status.textContent = 'Map tiles could not be loaded; the table view below still works. ' + (e.error?.message || ''); });
+  loadData().catch((e) => { status.textContent = 'Could not load facility data: ' + e.message; });
+</script>
