@@ -1,8 +1,14 @@
 ---
 interface Props { title: string; description?: string; }
-const { title, description = 'nuclear.academy — a nuclear security learning site.' } = Astro.props;
+const { title, description = 'nuclear.academy — nuclear security, explained from the public record.' } = Astro.props;
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
+const path = Astro.url.pathname;
+const nav = [
+  ['/modules/', 'Modules'], ['/tools/', 'Tools'], ['/atlas/', 'Atlas'],
+  ['/glossary/', 'Glossary'], ['/sources/', 'Sources'], ['/about/', 'About'],
+];
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 <!doctype html>
 <html lang="en">
@@ -11,28 +17,28 @@ import 'katex/dist/katex.min.css';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · nuclear.academy</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,700;1,6..72,400;1,6..72,500&family=Source+Sans+3:wght@400;600&display=swap" />
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header>
+    <header class="wrap masthead">
       <a class="brand" href="/">nuclear.academy</a>
-      <nav aria-label="Primary">
-        <a href="/modules/">Modules</a>
-        <a href="/tools/">Tools</a>
-        <a href="/glossary/">Glossary</a>
-        <a href="/sources/">Sources</a>
-        <a href="/about/">About</a>
+      <nav class="nav" aria-label="Primary">
+        {nav.map(([href, label]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
       </nav>
     </header>
-    <main id="main">
+    <main id="main" class="wrap">
       <slot />
     </main>
-    <footer>
+    <footer class="wrap footer">
       <p>© Howard L. Hall. Content and code licensed <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>.
-      Views expressed are the author's own and do not represent the University of Tennessee, the U.S. Department of Energy, or any sponsor.</p>
-      <p>Source: <a href="https://github.com/howardlhall/nuclear-academy">github.com/howardlhall/nuclear-academy</a>. No tracking cookies.</p>
+      Views expressed are the author's own and do not represent the University of Tennessee, the U.S. Department of Energy, or any sponsor.
+      No tracking cookies.</p>
+      <p><a href="https://github.com/howardlhall/nuclear-academy">Source on GitHub</a></p>
     </footer>
   </body>
 </html>

@@ -1,14 +1,44 @@
 ---
 import Base from '../layouts/Base.astro';
+import DecayPreview from '../components/DecayPreview.astro';
 ---
 <Base title="Home">
-  <h1>Nuclear security, taught from the open literature.</h1>
-  <p class="lede">Modules for people entering the nuclear profession, a glossary and source library, and
-  interactive tools that run in your browser. Built by Howard L. Hall, University of Tennessee.</p>
-  <ul>
-    <li><a href="/modules/">Modules</a> — starting with <em>Nuclear Security: Why It Matters</em>.</li>
-    <li><a href="/tools/">Tools</a> — a decay-chain (Bateman) calculator and a map of the civil nuclear fuel cycle.</li>
-    <li><a href="/glossary/">Glossary</a> and <a href="/sources/">source library</a>.</li>
-  </ul>
-  <p><em>Site under construction — first release in preparation.</em></p>
+  <section class="hero">
+    <div>
+      <div class="kicker">An open course of study</div>
+      <h1>Nuclear security, explained from the public record.</h1>
+      <p class="lede">How the world keeps nuclear material where it belongs — the institutions, the physics, and the arguments — written for readers who want to understand the subject rather than be alarmed by it. And instruments you can explore yourself.</p>
+      <p style="display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;margin-top:1.4rem">
+        <a class="btn" href="/modules/nuclear-security-why-it-matters/">Begin with Module 1</a>
+        <a class="link-more" href="/about/">What this site is, and is not →</a>
+      </p>
+    </div>
+    <DecayPreview />
+  </section>
+
+  <section class="section cols-3">
+    <div>
+      <div class="kicker">Modules</div>
+      <h2 style="margin-top:0">Nuclear Security: Why It Matters</h2>
+      <p>Security, safety, safeguards, and surety — and why the words are confused across languages. What actually impedes proliferation. The terrain ahead.</p>
+      <a class="link-more" href="/modules/nuclear-security-why-it-matters/">Eight sections →</a>
+    </div>
+    <div>
+      <div class="kicker">Tools</div>
+      <h2 style="margin-top:0">Decay-chain calculator</h2>
+      <p>The Bateman equations, solved in your browser for any chain you choose — with the mathematics shown beside the plot, not hidden behind it.</p>
+      <a class="link-more" href="/tools/decay-chain/">Explore the calculator →</a>
+    </div>
+    <div>
+      <div class="kicker">Atlas</div>
+      <h2 style="margin-top:0">The civil fuel cycle, on a map</h2>
+      <p>Reactors, enrichment, fabrication, and reprocessing plants from IAEA and NRC public data — each entry linked to the record it came from.</p>
+      <a class="link-more" href="/atlas/">Explore the map →</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker" style="color:var(--muted)">Current situation</div>
+    <p class="meta" style="max-width:var(--measure)">Dated pages, kept separate from the modules and reviewed on the date shown. None published yet.</p>
+  </section>
 </Base>

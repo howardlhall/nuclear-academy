@@ -1,7 +1,8 @@
 ---
 layout: ../../layouts/Page.astro
+kicker: "Tool"
 title: "Decay-chain calculator"
-description: "Bateman-equation solutions for radioactive decay chains."
+description: "Bateman-equation solutions for radioactive decay chains, plotted against time with the mathematics beside them."
 ---
 
 *In preparation.* Solves the Bateman equations for a chain of nuclides and plots activity and atom

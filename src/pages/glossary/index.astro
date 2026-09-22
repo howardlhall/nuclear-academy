@@ -4,12 +4,13 @@ import { getCollection, render } from 'astro:content';
 const terms = (await getCollection('glossary')).sort((a, b) => a.data.term.localeCompare(b.data.term));
 const rendered = await Promise.all(terms.map(async (t) => ({ t, C: (await render(t)).Content })));
 ---
-<Base title="Glossary">
-  <h1>Glossary</h1>
-  <dl>
+<Base title="Glossary" description="Terms of art, defined with their sources.">
+  <div class="kicker">Glossary</div>
+  <h1>Terms</h1>
+  <dl class="prose">
     {rendered.map(({ t, C }) => (
       <>
-        <dt id={t.id}><strong>{t.data.term}</strong>{t.data.source && <span> — <small>{t.data.source}</small></span>}</dt>
+        <dt id={t.id}>{t.data.term}{t.data.source && <span class="meta"> — {t.data.source}</span>}</dt>
         <dd><C /></dd>
       </>
     ))}

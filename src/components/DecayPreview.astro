@@ -1,0 +1,20 @@
+---
+/* Static preview plot for the home page; the live instrument is at /tools/decay-chain/ */
+---
+<div class="card">
+  <div class="card-head"><strong>Decay-chain calculator</strong><span class="meta">Mo-99 → Tc-99m → Tc-99</span></div>
+  <svg viewBox="0 0 440 220" width="100%" role="img" aria-label="Activity versus time for a two-member decay chain, showing the daughter rising to transient equilibrium with its parent">
+    <g stroke="var(--rule-soft)" stroke-width="1"><line x1="40" y1="24" x2="430" y2="24"/><line x1="40" y1="68" x2="430" y2="68"/><line x1="40" y1="112" x2="430" y2="112"/><line x1="40" y1="156" x2="430" y2="156"/></g>
+    <line x1="40" y1="200" x2="430" y2="200" stroke="var(--ink)" stroke-width="1"/>
+    <line x1="40" y1="24" x2="40" y2="200" stroke="var(--ink)" stroke-width="1"/>
+    <path d="M40,36 C130,56 250,112 430,184" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+    <path d="M40,200 C70,104 105,86 150,90 C230,98 330,140 430,188" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+    <text x="430" y="216" font-family="Source Sans 3, sans-serif" font-size="11" fill="var(--muted)" text-anchor="end">t / hours</text>
+    <text x="32" y="30" font-family="Source Sans 3, sans-serif" font-size="11" fill="var(--muted)" text-anchor="end">A</text>
+  </svg>
+  <div class="card-head">
+    <span class="meta"><span style="display:inline-block;width:14px;height:3px;background:var(--ink);vertical-align:middle;margin-right:6px"></span>parent
+      <span style="display:inline-block;width:14px;height:3px;background:var(--accent);vertical-align:middle;margin:0 6px 0 14px"></span>daughter</span>
+    <a class="link-more" href="/tools/decay-chain/">Explore →</a>
+  </div>
+</div>
