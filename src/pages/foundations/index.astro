@@ -12,4 +12,5 @@ const units = (await getCollection('foundations')).sort((a, b) => a.data.order -
       <li><span class="date">Unit {u.data.order}</span><span><a href={`/foundations/${u.id}/`}>{u.data.title}</a><br /><span class="meta">{u.data.description}</span></span></li>
     ))}
   </ul>
+  <p style="margin-top:2rem"><a class="link-more" href="/foundations/for-teachers/">For teachers: sequence, standards, misconceptions, and answer notes →</a></p>
 </Base>
