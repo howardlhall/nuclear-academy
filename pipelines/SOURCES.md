@@ -11,3 +11,11 @@ Read and record the terms of use for redistribution **before** storing any data 
 | IAEA PRIS / RRDB / NFCIS | Authoritative registers for reconciliation | https://pris.iaea.org/ · https://nucleus.iaea.org/rrdb/ · https://infcis.iaea.org/ | **Not yet used.** RRDB is an Angular app over an internal API with no stated terms; NFCIS requires registration; PRIS has no bulk export. Terms to be read and recorded before any data is stored | pending | Researcher task (roadmap WP4/§ 6): read terms; reconcile Wikidata entries; add register identifiers |
 | Global Energy Monitor — Global Nuclear Power Tracker (Aug 2026 release) | Reactor-level status, capacity, coordinates | https://globalenergymonitor.org/projects/global-nuclear-power-tracker/ | **Not yet used.** Download requires a request form (name, email); GEM data are published under CC BY 4.0 (to be confirmed on the download page) | pending — HLH to submit the form if wanted | Would replace/validate the power-plant layer |
 
+## Added 2026-09-22 (atlas provenance redesign — see CoworkRepo `Nuclear_Academy_Website/ATLAS_PROVENANCE_DESIGN.md`)
+
+| Source | Record | Terms (read 2026-09-22) | Status |
+|---|---|---|---|
+| IAEA, *Nuclear Power Reactors in the World*, RDS-2, 2025 edition (data at 31 Dec 2024) | `www-pub.iaea.org/MTCD/publications/PDF/RDS-2-45_web.pdf`, 2,191,911 bytes; text-extracted; per-unit tables 12–17 with PRIS unit IDs | IAEA Terms of Use (iaea.org/about/terms-of-use; nucleus.iaea.org Disclaimer.aspx): reuse permitted in commercial and non-commercial products with acknowledgement of the IAEA as source, no implied endorsement; databases free for educational/informational use | Fetched (container scratch); **not yet in `raw/`** — SHA-256 to be recorded on copy-in. 2026 edition exists; URL not found. |
+| IAEA Research Reactor Database (RRDB) | nucleus.iaea.org/rrdb — 849 reactors, public; "Download Excel" | same | **Download pending HLH approval** |
+| IAEA Nuclear Fuel Cycle Facilities Database (NFCFDB, via INFCIS) | infcis.iaea.org/NFCFDB/Facilities — 876 facilities, public; "Download Spreadsheet"; site disclaimer: list may be incomplete | same | **Download pending HLH approval** |
+| Wikidata (existing build) | as above | CC0 | Demoted to **tier 3: coordinates and cross-reference only** under the redesign |

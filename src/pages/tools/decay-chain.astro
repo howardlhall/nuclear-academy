@@ -115,7 +115,10 @@ import Method from '../../content/tools/decay-chain-method.md';
     dl.appendChild(frag);
     status.textContent = `${keys.length.toLocaleString()} nuclear states from ENSDF (${d.meta.distribution.replace('ensdf_', '20').replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')}). Choose a nuclide or a featured chain.`;
     // default: the home-page example
-    applyPreset('Mo-99|1|GBq|10|d'); run();
+    const q = new URLSearchParams(location.search).get('n');
+    if (q && table[q]) { const t12 = table[q].t12; const span = table[q].stable ? 10 : Math.max(1e-9, t12 * 10); const tunit = span > 3.15e8 ? 'y' : span > 86400 ? 'd' : span > 3600 ? 'h' : span > 60 ? 'min' : 's'; const div = { y:3.15576e7, d:86400, h:3600, min:60, s:1 }[tunit]; applyPreset(`${q}|1|kBq|${(span/div).toPrecision(2)}|${tunit}`); }
+    else applyPreset('Mo-99|1|GBq|10|d');
+    run();
   }).catch((e) => { status.textContent = 'Could not load nuclide data: ' + e.message; });
 
   function applyPreset(p) {

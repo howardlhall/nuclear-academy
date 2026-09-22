@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const pages = (await getCollection('situation')).sort((a, b) => b.data.asOf.localeCompare(a.data.asOf));
+---
+<Base title="Current situation" description="Dated pages carrying the figures and statuses that change: warhead counts, treaty status, verification gaps. Each is stamped with the date it was last re-checked.">
+  <div class="kicker">Situation</div>
+  <h1>Current situation</h1>
+  <p class="lede">The modules are written to last. These pages carry what does not — counts, statuses, and open disputes — with an as-of date on every page and on every figure. If a date looks old, it is.</p>
+  <ul class="list-rule" style="margin-top:2rem">
+    {pages.map((p) => (
+      <li><span class="date">as of {p.data.asOf}</span><span><a href={`/situation/${p.id}/`}>{p.data.title}</a><br /><span class="meta">{p.data.description}</span></span></li>
+    ))}
+  </ul>
+</Base>

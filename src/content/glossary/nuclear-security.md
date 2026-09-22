@@ -1,5 +1,5 @@
 ---
 term: "Nuclear security"
-source: "IAEA NSS 20; IAEA Safety Glossary 2022"
+source: "IAEA Nuclear Safety and Security Glossary, 2022 (Interim) Edition; IAEA NSS 20"
 ---
-The prevention and detection of, and response to, theft, sabotage, unauthorized access, illegal transfer or other malicious acts involving nuclear material, other radioactive material, or their associated facilities. The defining feature is an adversary who intends harm.
+"The prevention and detection of, and response to, criminal or intentional unauthorized acts involving or directed at nuclear material, other radioactive material, associated facilities or associated activities." The defining feature is an adversary who intends harm.

@@ -16,3 +16,4 @@ npm-debug.log*
 # phantom sync directories the bridge cannot delete; trash in Finder
 _ghost_*/
 site_preview.tgz
+_preview_tmp/

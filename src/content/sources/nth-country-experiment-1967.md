@@ -5,4 +5,4 @@ year: 1967
 venue: "UCRL-50249, March 1967; released under FOIA"
 identifier: "UCRL-50249"
 ---
-Three physicists without weapons experience produced a credible design from open literature in about two and a half years. No stable official link located; cite by report number.
+Three physicists without weapons experience produced a credible design from open literature between May 1964 and 1967 (two and a half years, three person-years). OCR text via the National Security Archive (see nsarchive-nth-country-2025). Verified 2026-09-22.

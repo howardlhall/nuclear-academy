@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const units = (await getCollection('foundations')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Foundations" description="Start here if you have not had chemistry or physics yet: atoms, isotopes, the chart of the nuclides, radioactive decay, nuclear reactions, and the math that goes with them — written for grades 8 to 12.">
+  <div class="kicker">Foundations</div>
+  <h1>Start here</h1>
+  <p class="lede">Five short units that build from the atom up to what the rest of this site talks about. Written for readers in grades 8 to 12; no chemistry or physics course required. Each unit ends with something to try on the site's own tools.</p>
+  <ul class="list-rule" style="margin-top:2rem">
+    {units.map((u) => (
+      <li><span class="date">Unit {u.data.order}</span><span><a href={`/foundations/${u.id}/`}>{u.data.title}</a><br /><span class="meta">{u.data.description}</span></span></li>
+    ))}
+  </ul>
+</Base>

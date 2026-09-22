@@ -1,0 +1,154 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Nuclide chart explorer" description="An interactive chart of the nuclides drawn from the ENSDF evaluated data: every ground state, colored by how it decays. Click a box to see its half-life and what it turns into.">
+  <div class="kicker">Tool · Foundations</div>
+  <h1>Nuclide chart explorer</h1>
+  <p class="lede">Every box is one nuclide — protons up, neutrons across. Colors show what each one does. Click a box, or type a name, to see how long it lasts and where it goes. Drawn in your browser from the same evaluated data (ENSDF) as the <a href="/tools/decay-chain/">decay-chain calculator</a>.</p>
+
+  <section class="card nc-controls" aria-label="Find a nuclide">
+    <label>Find <input id="nc-find" list="nc-list" placeholder="e.g. C-14, U-238, Sn" autocomplete="off" spellcheck="false" /><datalist id="nc-list"></datalist></label>
+    <label>Zoom <input id="nc-zoom" type="range" min="1" max="5" step="0.5" value="1" /></label>
+    <div class="nc-legend" role="list" aria-label="Colors">
+      <span role="listitem"><i style="background:var(--nc-stable)"></i>stable</span>
+      <span role="listitem"><i style="background:var(--nc-bm)"></i>β⁻ (too many neutrons)</span>
+      <span role="listitem"><i style="background:var(--nc-bp)"></i>β⁺ / electron capture (too few)</span>
+      <span role="listitem"><i style="background:var(--nc-a)"></i>α (heavy)</span>
+      <span role="listitem"><i style="background:var(--nc-sf)"></i>spontaneous fission</span>
+      <span role="listitem"><i style="background:var(--nc-other)"></i>other / unknown</span>
+    </div>
+  </section>
+
+  <div class="nc-layout">
+    <div class="nc-chartwrap card" id="nc-chartwrap">
+      <svg id="nc-svg" role="img" aria-labelledby="nc-svg-title"><title id="nc-svg-title">Chart of the nuclides: neutrons across, protons up, colored by decay mode</title></svg>
+    </div>
+    <aside class="card nc-info" id="nc-info" aria-live="polite">
+      <p class="meta">Click a box to see a nuclide here.</p>
+    </aside>
+  </div>
+
+  <section class="prose" style="margin-top:2rem">
+    <h2>How to read it</h2>
+    <p>Move up one row and you add a proton — a new element. Move right one column and you add a neutron — a new isotope of the same element. The narrow band of dark boxes running from bottom-left to upper-right is the <em>valley of stability</em>; everything off it is radioactive, and which color it is tells you which way it falls back toward the band. Above lead there are no stable boxes at all. <a href="/foundations/02-isotopes-and-the-chart-of-the-nuclides/">Unit 2 of the foundations track</a> explains why.</p>
+    <p>Only ground states are drawn (long-lived excited states, called isomers, are listed in the panel when a box has them). Colors follow the largest decay branch. Half-lives and branches are from ENSDF as re-served in <code>/data/nuclides.json</code>; see the <a href="/sources/">source library</a> for the data disposition.</p>
+  </section>
+</Base>
+
+<style>
+  :root { --nc-stable:#1c1a17; --nc-bm:#2b6cb0; --nc-bp:#c05621; --nc-a:#d69e2e; --nc-sf:#38a169; --nc-other:#a0aec0; }
+  :root[data-theme="dark"] { --nc-stable:#f6f2ea; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --nc-stable:#f6f2ea; } }
+  .nc-controls { display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:center; margin-top:1.5rem }
+  .nc-controls label { display:flex; gap:.5rem; align-items:center; font-family:var(--sans) }
+  .nc-controls input { font:inherit; padding:.4rem .6rem; border:1px solid var(--rule); border-radius:4px; background:var(--card); color:var(--ink); min-width:14ch }
+  .nc-legend { display:flex; flex-wrap:wrap; gap:.4rem 1rem; font-family:var(--sans); font-size:.85rem }
+  .nc-legend i { display:inline-block; width:.9em; height:.9em; margin-right:.35em; vertical-align:-.1em; border-radius:2px }
+  .nc-layout { display:grid; grid-template-columns: minmax(0,1fr) 20rem; gap:1rem; margin-top:1rem }
+  @media (max-width: 800px) { .nc-layout { grid-template-columns: 1fr } }
+  .nc-chartwrap { overflow:auto; max-height:70vh; padding:.5rem; touch-action: pan-x pan-y }
+  #nc-svg { display:block; max-width:none }
+  #nc-svg rect.n { stroke:none; cursor:pointer }
+  #nc-svg rect.n:hover, #nc-svg rect.n.sel { stroke:var(--accent); stroke-width:1.5 }
+  #nc-svg text.ax { font-family:var(--sans); font-size:10px; fill:var(--muted) }
+  .nc-info h2 { margin:0 0 .5rem; font-size:1.4rem }
+  .nc-info table { width:100%; border-collapse:collapse; font-size:.9rem }
+  .nc-info td { padding:.2rem 0; vertical-align:top }
+  .nc-info td:first-child { color:var(--muted); font-family:var(--sans); width:7.5em }
+  .nc-info .nc-hop { display:inline-block; margin:.15rem .3rem .15rem 0; padding:.1rem .5rem; border:1px solid var(--rule); border-radius:999px; font-family:var(--sans); font-size:.85rem; cursor:pointer; background:none; color:var(--ink) }
+</style>
+
+<script>
+  const MODE_COLOR = { stable:'var(--nc-stable)', 'B-':'var(--nc-bm)', 'B+':'var(--nc-bp)', 'EC':'var(--nc-bp)', 'EC+B+':'var(--nc-bp)', 'A':'var(--nc-a)', 'SF':'var(--nc-sf)' };
+  const MODE_NAME = { 'B-':'beta-minus (β⁻)', 'B+':'positron emission (β⁺)', 'EC':'electron capture', 'EC+B+':'electron capture / β⁺', 'A':'alpha (α)', 'SF':'spontaneous fission', 'IT':'isomeric transition (γ)', 'N':'neutron emission', 'P':'proton emission', '2B-':'double beta-minus', '2EC':'double electron capture', 'B-N':'β⁻ then neutron', 'B-2N':'β⁻ then two neutrons', 'B+P':'β⁺ then proton', 'ECP':'electron capture then proton', '2P':'two-proton emission', '14C':'carbon-14 cluster emission', 'B-A':'β⁻ then alpha', 'ECA':'electron capture then alpha', 'B+A':'β⁺ then alpha' };
+  const CELL = 9, PAD = 34;
+  let DATA = null, byKey = new Map(), selected = null;
+
+  function primaryMode(n) {
+    if (n.stable) return 'stable';
+    if (!n.tr || !n.tr.length) return 'other';
+    const top = [...n.tr].sort((a,b)=>b.f-a.f)[0];
+    return top.m in MODE_COLOR ? top.m : 'other';
+  }
+  function colorFor(n) { return MODE_COLOR[primaryMode(n)] || 'var(--nc-other)'; }
+  function key(z,nn) { return z+':'+nn; }
+
+  async function main() {
+    const res = await fetch('/data/nuclides.json');
+    DATA = await res.json();
+    const nucs = Object.entries(DATA.nuclides).filter(([k,n]) => !n.iso && n.E === 0).map(([k,n]) => ({ ...n, key:k, n: n.a - n.z }));
+    let maxZ = 0, maxN = 0;
+    for (const n of nucs) { byKey.set(key(n.z,n.n), n); if (n.z>maxZ) maxZ=n.z; if (n.n>maxN) maxN=n.n; }
+    // isomers listed per ground state
+    const isomers = {};
+    for (const [k,n] of Object.entries(DATA.nuclides)) if (n.iso) { const g = n.el+'-'+n.a; (isomers[g] ||= []).push({key:k, ...n}); }
+    const W = PAD + (maxN+1)*CELL + 4, H = PAD + (maxZ+1)*CELL + 4;
+    const svg = document.getElementById('nc-svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const zoomEl = document.getElementById('nc-zoom');
+    const wrap = document.getElementById('nc-chartwrap');
+    function applyZoom() { const base = Math.max(wrap.clientWidth - 16, 320) / W; const zf = base * parseFloat(zoomEl.value); svg.setAttribute('width', W * zf); svg.setAttribute('height', H * zf); }
+    zoomEl.addEventListener('input', applyZoom); window.addEventListener('resize', applyZoom);
+    // phones start zoomed in so boxes are tappable
+    if (wrap.clientWidth < 600) zoomEl.value = '3';
+    applyZoom();
+    const NS='http://www.w3.org/2000/svg';
+    const frag = document.createDocumentFragment();
+    for (const n of nucs) {
+      const r = document.createElementNS(NS,'rect');
+      r.setAttribute('class','n'); r.setAttribute('x', PAD + n.n*CELL); r.setAttribute('y', H - PAD - (n.z+1)*CELL);
+      r.setAttribute('width', CELL-1); r.setAttribute('height', CELL-1); r.setAttribute('fill', colorFor(n));
+      r.dataset.key = n.key;
+      const t = document.createElementNS(NS,'title'); t.textContent = `${n.key} — ${n.stable ? 'stable' : (n.t12_str || 'unknown')}`; r.appendChild(t);
+      frag.appendChild(r);
+    }
+    // axes
+    for (let z=0; z<=maxZ; z+=10) { const t=document.createElementNS(NS,'text'); t.setAttribute('class','ax'); t.setAttribute('x',4); t.setAttribute('y', H - PAD - z*CELL - 1); t.textContent = 'Z='+z; frag.appendChild(t); }
+    for (let nn=0; nn<=maxN; nn+=10) { const t=document.createElementNS(NS,'text'); t.setAttribute('class','ax'); t.setAttribute('x', PAD + nn*CELL); t.setAttribute('y', H-6); t.textContent = 'N='+nn; frag.appendChild(t); }
+    svg.appendChild(frag);
+    svg.addEventListener('click', (e) => { const k = e.target && e.target.dataset && e.target.dataset.key; if (k) select(k); });
+
+    // datalist
+    const dl = document.getElementById('nc-list');
+    for (const n of nucs) { const o=document.createElement('option'); o.value=n.key; dl.appendChild(o); }
+    const find = document.getElementById('nc-find');
+    find.addEventListener('change', () => { const v = find.value.trim(); const k = normalize(v); if (k) select(k); });
+
+    function normalize(v) {
+      if (!v) return null;
+      const m = v.match(/^([A-Za-z]{1,2})[-\s]?(\d{1,3})$/); if (m) { const k = m[1][0].toUpperCase()+m[1].slice(1).toLowerCase()+'-'+m[2]; return DATA.nuclides[k] ? k : null; }
+      const m2 = v.match(/^(\d{1,3})[-\s]?([A-Za-z]{1,2})$/); if (m2) { const k = m2[2][0].toUpperCase()+m2[2].slice(1).toLowerCase()+'-'+m2[1]; return DATA.nuclides[k] ? k : null; }
+      // element symbol alone: pick the most stable
+      const el = v[0].toUpperCase()+v.slice(1).toLowerCase();
+      const row = nucs.filter(n => n.el===el); if (!row.length) return null;
+      row.sort((a,b)=> (b.stable?1e300:(b.t12||0)) - (a.stable?1e300:(a.t12||0))); return row[0].key;
+    }
+
+    function select(k) {
+      const n = DATA.nuclides[k]; if (!n) return;
+      if (selected) selected.classList.remove('sel');
+      const r = svg.querySelector(`rect[data-key="${k}"]`); if (r) { r.classList.add('sel'); selected = r; r.scrollIntoView({block:'center', inline:'center', behavior:'smooth'}); }
+      const N = n.a - n.z;
+      const rows = [
+        ['Element', `${elementName(n.el)} (${n.el}), Z = ${n.z}`],
+        ['Mass number', `A = ${n.a}`],
+        ['Neutrons', `N = A − Z = ${N}`],
+        ['Half-life', n.stable ? 'stable' : (n.t12_str || 'not evaluated')],
+      ];
+      let hops = '';
+      if (!n.stable && n.tr && n.tr.length) {
+        hops = '<tr><td>Decays by</td><td>' + [...n.tr].sort((a,b)=>b.f-a.f).map(t => `${MODE_NAME[t.m]||t.m} — ${(t.f*100).toPrecision(3)}%${t.to ? ` → <button class="nc-hop" data-go="${t.to}">${t.to}</button>` : ''}`).join('<br>') + '</td></tr>';
+      }
+      const iso = isomers[k];
+      const isoRow = iso ? `<tr><td>Isomers</td><td>${iso.map(i=>`${i.key} (${i.t12_str||'?'})`).join('<br>')}</td></tr>` : '';
+      const calc = `<p style="margin:.75rem 0 0"><a class="link-more" href="/tools/decay-chain/?n=${encodeURIComponent(k)}">Open in the decay-chain calculator →</a></p>`;
+      document.getElementById('nc-info').innerHTML = `<h2>${k}</h2><table>${rows.map(([a,b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join('')}${hops}${isoRow}</table>${calc}<p class="meta" style="margin-top:.75rem;font-size:.8rem">${n.src}</p>`;
+      document.querySelectorAll('#nc-info .nc-hop').forEach(b => b.addEventListener('click', () => select(b.dataset.go)));
+      find.value = k;
+    }
+    const params = new URLSearchParams(location.search); if (params.get('n')) select(params.get('n')); else select('C-14');
+  }
+  const NAMES = {H:'hydrogen',He:'helium',Li:'lithium',Be:'beryllium',B:'boron',C:'carbon',N:'nitrogen',O:'oxygen',F:'fluorine',Ne:'neon',Na:'sodium',Mg:'magnesium',Al:'aluminum',Si:'silicon',P:'phosphorus',S:'sulfur',Cl:'chlorine',Ar:'argon',K:'potassium',Ca:'calcium',Sc:'scandium',Ti:'titanium',V:'vanadium',Cr:'chromium',Mn:'manganese',Fe:'iron',Co:'cobalt',Ni:'nickel',Cu:'copper',Zn:'zinc',Ga:'gallium',Ge:'germanium',As:'arsenic',Se:'selenium',Br:'bromine',Kr:'krypton',Rb:'rubidium',Sr:'strontium',Y:'yttrium',Zr:'zirconium',Nb:'niobium',Mo:'molybdenum',Tc:'technetium',Ru:'ruthenium',Rh:'rhodium',Pd:'palladium',Ag:'silver',Cd:'cadmium',In:'indium',Sn:'tin',Sb:'antimony',Te:'tellurium',I:'iodine',Xe:'xenon',Cs:'cesium',Ba:'barium',La:'lanthanum',Ce:'cerium',Pr:'praseodymium',Nd:'neodymium',Pm:'promethium',Sm:'samarium',Eu:'europium',Gd:'gadolinium',Tb:'terbium',Dy:'dysprosium',Ho:'holmium',Er:'erbium',Tm:'thulium',Yb:'ytterbium',Lu:'lutetium',Hf:'hafnium',Ta:'tantalum',W:'tungsten',Re:'rhenium',Os:'osmium',Ir:'iridium',Pt:'platinum',Au:'gold',Hg:'mercury',Tl:'thallium',Pb:'lead',Bi:'bismuth',Po:'polonium',At:'astatine',Rn:'radon',Fr:'francium',Ra:'radium',Ac:'actinium',Th:'thorium',Pa:'protactinium',U:'uranium',Np:'neptunium',Pu:'plutonium',Am:'americium',Cm:'curium',Bk:'berkelium',Cf:'californium',Es:'einsteinium',Fm:'fermium',Md:'mendelevium',No:'nobelium',Lr:'lawrencium',Rf:'rutherfordium',Db:'dubnium',Sg:'seaborgium',Bh:'bohrium',Hs:'hassium',Mt:'meitnerium',Ds:'darmstadtium',Rg:'roentgenium',Cn:'copernicium',Nh:'nihonium',Fl:'flerovium',Mc:'moscovium',Lv:'livermorium',Ts:'tennessine',Og:'oganesson'};
+  function elementName(sym) { return NAMES[sym] || sym; }
+  main();
+</script>

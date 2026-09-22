@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const units = await getCollection('foundations');
+  return units.map((u) => ({ params: { slug: u.id }, props: { u } }));
+}
+const { u } = Astro.props;
+const { Content } = await render(u);
+---
+<Base title={u.data.title} description={u.data.description}>
+  <div class="kicker">Foundations · Unit {u.data.order}</div>
+  <h1>{u.data.title}</h1>
+  <p class="lede">{u.data.description}</p>
+  {u.data.before.length > 0 && (
+    <p class="meta">Before you start: {u.data.before.join(' · ')}</p>
+  )}
+  <div class="prose"><Content /></div>
+  {u.data.tool && <p style="margin-top:2rem"><a class="link-more" href={u.data.tool}>Try it on the site →</a></p>}
+  {u.data.lastReviewed && <p class="meta" style="margin-top:2rem">Last reviewed {u.data.lastReviewed}.</p>}
+</Base>

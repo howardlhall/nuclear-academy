@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const pages = await getCollection('situation');
+  return pages.map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const { Content } = await render(p);
+---
+<Base title={p.data.title} description={p.data.description}>
+  <div class="kicker">Situation · as of {p.data.asOf}</div>
+  <h1>{p.data.title}</h1>
+  <p class="lede">{p.data.description}</p>
+  <div class="prose"><Content /></div>
+  {p.data.module && <p class="meta" style="margin-top:2rem">Companion to <a href={`/modules/${p.data.module}/`}>the module</a>. Last re-checked {p.data.asOf}.</p>}
+</Base>

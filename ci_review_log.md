@@ -21,6 +21,8 @@ export-controlled; log that a finding was made, its disposition, and where the d
 |---|---|---|---|---|---|
 | 2026-09-22 | scaffold v0.1 (no content) | n/a — no outbound content | baseline set | n/a | none |
 | 2026-09-22 | atlas v0.1 (diagrams, explainer, facilities schema v1) + decay-chain calculator v0.1 | 10 CFR 1017, 1045.130, 73.22, 810; 15 CFR 734.7; DOE S&T Risk Matrix (Apr 2026) — checked 2026-09-22; not reached: DOE O 471.7 text, NCSC (archived site), OSTP CETL, UTK page | baseline set: subject matter (C2 general) + aggregation (civil layer, public registers) | items 1–4 clear; item 5 revise-and-publish → clear | Generic Wikidata class dropped (mixed defense sites into civil layer); two misclassifications corrected via overrides. Full block below. |
+| 2026-09-22 | Module 1 v3 (post cold review + diff-zone) + situation page v3 (new) + glossary/source additions | 10 CFR 1045.130 and 1045.65 re-read from eCFR (page current as of 2026-09-10; both sections last amended 83 FR 66007, 2018); part 1045 shows 2026 amendments (5/29, 7/09) in other sections — **not read this run**; other basis items as 13:20 run, not re-fetched | movement: Module 1 now names state attacks on facilities, the Iran verification gap, and the transport-theft pattern; situation page adds dated Iran/testing/ZNPP status | items 1–6 clear; item 7 (isotope list) removed | Full block below. |
+| 2026-09-22 | Foundations F1–F2 (draft) + nuclide chart explorer v0.1 | as the 15:15 run (same day; not re-fetched) | none — textbook-level content (atoms, isotopes, chart of the nuclides); explorer re-serves the same ENSDF table already screened with the calculator, adds no selection | clear (screened at draft stage; re-screen with the § 0 cycle before `main`) | none |
 
 ### CI screen — atlas v0.1 and decay-chain calculator v0.1, 2026-09-22 (run 13:20–13:35 local)
 
@@ -41,3 +43,25 @@ export-controlled; log that a finding was made, its disposition, and where the d
 
 **Finding:** clear (items 1–4); revise-and-publish → clear after revision (item 5).
 **Action:** none further before merge to `main`; HLH's editorial read of the explainer is a separate (non-CI) gate.
+
+### CI screen — Module 1 v3 and situation page v3, 2026-09-22 (run 15:15–15:25 local)
+
+**Sources refreshed (checked 2026-09-22, this run):** 10 CFR 1045.130 (eCFR; text unchanged, last amended 83 FR 66007) and 10 CFR 1045.65 (same) re-read in full. eCFR shows part 1045 amended 2026-05-29 and 2026-07-09 in sections not read this run — **recorded as a gap; HLH to confirm those amendments do not touch the no-comment or compilation rules.** Other basis items (10 CFR 1017, 73.22, 810; 15 CFR 734.7; DOE S&T Risk Matrix Apr 2026) as the 13:20 run today; not re-fetched.
+
+**Delta screened:** v1→v3 diff of Module 1 (`Nuclear_Academy_Website/reviews_20260922/module1_v1_to_v2.diff`, `module1_v2_to_v3.diff`); the whole situation page; four glossary entries; sixteen source-library entries.
+
+**Items and findings.**
+1. *Definitions (§ 2)* — verbatim IAEA glossary text; multilingual usage. **Clear.**
+2. *§ 4 weapons basics* — unchanged two-path statement from v1 (gun-type/implosion at encyclopedia level); new text adds no technical detail; the "limits of the consensus" paragraph is argumentative, not technical. C5: no sentence characterizes the accuracy of any open-literature technical claim; the Oppenheimer remark is marked "attributed." **Clear.**
+3. *§ 4 Additional Protocol / Iran* — safeguards-policy content from IAEA public reports and press; no facility detail beyond public names. **Clear.**
+4. *§ 6 non-state threat* — "gun-type requires HEU" retained (open literature, NSS-level, unchanged from v1); **the four-isotope RDD list removed** (uncited in v1; its removal also answers the reviewers' pairing concern — the module no longer lists preferred source isotopes next to an atlas link). The transport-theft pattern (55 % / 70 %) is the IAEA's own headline finding, published for that purpose. **Clear after removal.**
+5. *§ 6 legal framework, § 7 trends, "States as attackers"* — policy and public-event content; the module states that it does not adjudicate the attacks. **Clear.** Institutional note (C6): the passage on DOE-authorized demonstration reactors and "whose security rules apply" is a public regulatory question, stated neutrally; HLH to read as the NNSA-funded author before `main`.
+6. *Situation page* — SIPRI table (published dataset), treaty status, IAEA Board actions, Chernobyl NSC status, ITDB counts — all from the cited public reports; no facility-protection detail. C1: re-serving SIPRI's table is not a new compilation. **Clear.**
+7. *Glossary/source entries* — bibliographic. **Clear.**
+
+**Aggregation check:** the site's public picture after this version adds a dated policy page and a longer module; nothing joins previously unjoined sources. The atlas is unchanged since the 13:20 screen.
+
+**Movement vs. baseline:** the "weapons basics" row of the baseline is unchanged in technical content. New subject matter (state attacks; Iran) is policy-level and public. Recorded, no baseline change.
+
+**Finding:** clear (items 1–3, 5–7); revise → clear (item 4).
+**Action:** none further for CI before merge to `main`. Separate non-CI gates still open: HLH editorial pass; award-terms check for DE-NA0004197 (reviewer flag); the § 0 gate is **not** satisfied for v3 (no cold read of v3 exists yet — see reviews folder).
