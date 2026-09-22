@@ -79,6 +79,10 @@ conventional enough that the mapping is usually obvious.
   particles doing different things to the nucleus; the bookkeeping rule (Unit 3, section 2)
   lets students derive the daughter instead of memorizing it.
 - **"Critical" means "about to explode."** It means steady (Unit 4, section 4).
+- **"Negative means favorable."** Chemistry students carry ΔG < 0 into Unit 4 and read a
+  positive Q-value as unfavorable. Unit 4, section 7 flags the sign flip explicitly; it is worth
+  saying aloud that Q counts energy released, ΔH counts energy change of the system, and that the
+  conventions were simply never reconciled.
 - **Chemistry can change one element into another.** It cannot; the nucleus is untouched by
   chemistry (Unit 1, section 2; Unit 2, section 1).
 
@@ -118,7 +122,12 @@ any β⁺ emitter down-right; both toward the band.
 
 **Unit 4.** (1) U-239 → Np-239 (β⁻, 23.5 minutes) → Pu-239 (β⁻, 2.36 days): two hops. (2) Sr-90
 and Cs-137 both sit to the right of the band and decay by β⁻ (Sr-90 → Y-90; Cs-137 → Ba-137m,
-mostly). (3) Open-ended; check that A goes up by one and Z is unchanged.
+mostly). (3) Open-ended; check that A goes up by one and Z is unchanged. (4) Q(²³⁹Pu → ²³⁵U + ⁴He)
+= (239.052162 − 235.043928 − 4.002603) u × 931.494 = 0.005631 u × 931.494 ≈ 5.24 MeV. Pu-239's
+half-life is 24,100 years; an alpha emitter with Q near 8–9 MeV (e.g. Po-212, 8.95 MeV) lives
+microseconds — higher Q, shorter half-life, steeply (Geiger–Nuttall). Section 7 is the natural
+place to use the mass–energy equivalence students meet in physics; the arithmetic is only
+subtraction and one multiplication, but insist on carrying six decimals.
 
 **Unit 5.** (1) At 12 h the calculator gives 2.0 GBq of Tc-99m; at 30 h, 0.25 GBq. (2) On a log
 vertical axis the C-14 line is straight; the fraction at 20,000 years is 0.088. (3) In the U-238

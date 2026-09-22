@@ -141,6 +141,87 @@ nucleus releases about 200 MeV — roughly fifty million times the energy of bur
 atom. That ratio is the reason a few kilograms of fuel can run a city, and the reason the same
 few kilograms need guarding.
 
+## 7. Putting a number on it: Q-values
+
+The hill picture tells you *whether* a reaction gives off energy. To find out *how much*, you
+weigh both sides. The energy released by a reaction is called its **Q-value**, and the recipe is
+the same for every reaction and every decay:
+
+> **Q = (mass of what goes in − mass of what comes out) × c²**
+
+If Q is positive, mass has disappeared and that mass came out as energy — kinetic energy of the
+products, gamma rays, or both. If Q is negative, the reaction cannot happen unless the incoming
+particle brings at least that much energy with it.
+
+**A warning about signs.** If you have taken chemistry, this is backwards from what you learned
+there. In thermodynamics a reaction is favored when ΔG (or ΔH) is *negative* — energy leaves the
+system, so the system's energy goes down, so the sign is minus. Nuclear physics counts the same
+event from the other side: Q is the energy *released*, so a reaction that gives off energy has a
+*positive* Q. Same physics, opposite bookkeeping. An exothermic chemical reaction has ΔH < 0; an
+exothermic nuclear reaction has Q > 0. Scientific conventions grew up in different rooms at
+different times, and nobody went back to make them agree — so check which one a table is using
+before you trust a sign.
+
+Three things make the arithmetic easy:
+
+1. **Use atomic masses in atomic mass units (u).** Tables of nuclear data list the mass of each
+   *atom* — nucleus plus electrons — to nine or ten figures. As long as you use atomic masses on
+   both sides, the electrons cancel out (the same number of electrons goes in and comes out,
+   because charge is conserved), so you can ignore them.
+2. **Convert with one number.** One atomic mass unit is worth **931.494 MeV** of energy. So
+   Q (in MeV) = (mass in − mass out, in u) × 931.494. You never need c² itself.
+3. **Only the last few decimal places matter.** The masses are all close to whole numbers; the
+   energy is hiding in the fifth and sixth decimal places. Keep all the digits until the
+   subtraction is done.
+
+**Example 1: fusion.** Deuterium and tritium fuse to make helium-4 and a neutron (section 5).
+
+| in | u | out | u |
+|---|---|---|---|
+| ²H | 2.014102 | ⁴He | 4.002603 |
+| ³H | 3.016049 | n | 1.008665 |
+| total | 5.030151 | total | 5.011268 |
+
+Mass in − mass out = 0.018883 u. Times 931.494 gives **Q = +17.6 MeV**. That is the energy every
+D–T fusion releases, most of it carried off by the neutron.
+
+**Example 2: neutron capture.** A neutron hits uranium-235 and sticks (section 2):
+n + ²³⁵U → ²³⁶U.
+
+Mass in = 1.008665 + 235.043928 = 236.052593 u. Mass out = 236.045566 u. Difference 0.007027 u,
+so **Q = +6.5 MeV**. This is the energy that arrives *inside* the new nucleus the instant the
+neutron is absorbed, before anything else happens — and 6.5 MeV is more than enough to make
+uranium-236 split. Do the same sum for n + ²³⁸U → ²³⁹U and you get only 4.8 MeV, which is not
+enough. That two-MeV difference is the whole reason U-235 is a fuel and U-238 is not
+(section 3).
+
+**Example 3: fission.** One of the many ways uranium-235 can split:
+n + ²³⁵U → ¹⁴¹Ba + ⁹²Kr + 3n.
+
+Mass in = 236.052593 u. Mass out = 140.914404 + 91.926173 + 3 × 1.008665 = 235.866572 u.
+Difference 0.186021 u, so **Q ≈ +173 MeV** for this split. Different fragment pairs give
+slightly different numbers, and the fragments' later beta decays add more; the average over all
+of them is the ~200 MeV per fission quoted in section 6.
+
+**Example 4: binding energy from the same recipe.** Treat "assembling helium-4 from its parts" as
+a reaction: 2 protons + 2 neutrons → ⁴He. Using the hydrogen-atom mass for the proton (so the
+electrons cancel): 2 × 1.007825 + 2 × 1.008665 = 4.032980 u in, 4.002603 u out. Difference
+0.030377 u → **28.3 MeV**. That is the binding energy of helium-4, and 28.3 ÷ 4 = **7.07 MeV per
+nucleon** — exactly the number the curve in section 6 plots for helium. Every point on that curve
+is this calculation done for one nuclide.
+
+**A negative one, to see what it means.** Protons hitting lithium-7 to make beryllium-7 and a
+neutron: mass in 8.023828 u, mass out 8.025594 u. The products are *heavier*, so
+**Q = −1.64 MeV**. This reaction runs only if the proton arrives with more than 1.64 MeV of
+kinetic energy (a little more, in fact, because some energy has to go into the recoil). Physicists
+use exactly this reaction as a laboratory neutron source, with an accelerator to supply the
+energy.
+
+The same recipe gives the energy of any decay from Unit 3. Tritium → helium-3 + β⁻: the atomic
+masses differ by 0.0000200 u, so Q = 18.6 **keV** — a thousand times less than a typical
+reaction, which is why tritium's beta particles cannot get through skin. Alpha decay, gamma
+decay, spontaneous fission: weigh in, weigh out, multiply by 931.494.
+
 ## Try it
 
 - In the [explorer](/tools/nuclide-chart/), find U-238, then look one box to the right (U-239).
@@ -149,6 +230,10 @@ few kilograms need guarding.
   neutron-rich side of the valley and decays by β⁻.
 - Pick any nuclide and write a balanced neutron-capture equation for it. Then find the product on
   the chart and see what it does next.
+- Look up the atomic masses of plutonium-239, uranium-235 and helium-4 (the IAEA Live Chart
+  lists them) and compute the Q-value of the alpha decay ²³⁹Pu → ²³⁵U + ⁴He. You should get about
+  5.2 MeV. Then find Pu-239 in the explorer and see how its half-life compares with a nuclide
+  whose alpha Q-value is 8 or 9 MeV — the pattern you notice has a name (the Geiger–Nuttall rule).
 
 ## Where this comes from
 
@@ -156,6 +241,11 @@ Neutron capture, fission, fusion and the binding-energy curve are in every intro
 physics text. Natural uranium is 0.72 percent U-235 by atom count (IAEA and NRC glossaries). The
 fission-product mass distribution peaks near A = 95 and A = 140 for thermal fission of U-235
 (evaluated fission-yield data). The ~200 MeV energy release per U-235 fission and the location of
-the binding-energy peak near iron-56 and nickel-62 are standard. The critical-mass statement is
+the binding-energy peak near iron-56 and nickel-62 are standard. The atomic masses in section 7
+are the AME2020 values as served by the IAEA Live Chart of Nuclides (retrieved 2026-09-22, in the
+site's data pipeline), rounded to six decimals; 1 u = 931.494 MeV (CODATA 2018). The Q-values were
+recomputed from the unrounded masses: D–T 17.589 MeV; n + U-235 6.546 MeV; n + U-238 4.806 MeV;
+the Ba-141/Kr-92 split 173.28 MeV; He-4 binding 28.296 MeV; p + Li-7 −1.644 MeV; tritium decay
+18.59 keV. The critical-mass statement is
 kept deliberately at the level found in public encyclopedias; this site does not carry weapon-design
 detail (see the site's [about page](/about/)).
