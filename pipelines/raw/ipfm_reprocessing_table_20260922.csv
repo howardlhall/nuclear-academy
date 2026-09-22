@@ -1,0 +1,17 @@
+country,facility,type,status,safeguards,capacity_tHM
+China,Jinta Project I & II,(Civilian),Construction completed,no,400
+China,Jiuquan,Civilian,Operating,no,50
+France,La Hague UP2,Civilian,Operating,yes,1000
+France,La Hague UP3,Civilian,Operating,yes,1000
+India,Trombay,Military,Operating,no,50
+India,Tarapur-I,Dual,Operating,no,100
+India,Tarapur-II,Dual,Operating,no,100
+India,Kalpakkam,Dual,Operating,no,100
+Israel,Dimona,Military,Operating,no,40-100
+Japan,Rokkasho,Civilian,Start planned for 2027,yes,800
+DPRK,Yongbyon,Military,Operating,no,100-150
+Pakistan,Nilore,Military,Operating,no,20-40
+Pakistan,Chashma,Military,Under construction,no,50-100
+Russia,RT-1 (Mayak),Dual,Operating,no,400
+Russia,EDC (Zheleznogorsk),Civilian,Starting up. Full capacity expected in 2026,no,220
+United States,H-Canyon (Savannah River Site),Military,Operating,no,15

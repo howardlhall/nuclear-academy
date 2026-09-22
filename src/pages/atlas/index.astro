@@ -25,9 +25,15 @@ import Explainer from '../../content/tools/atlas-explainer.md';
   </section>
 
   <section aria-labelledby="map-h" class="section">
-    <h2 id="map-h">Civil nuclear facilities</h2>
+    <h2 id="map-h">Facilities on the map</h2>
     <p class="meta" id="atlas-status">Loading facilities…</p>
-    <div class="atlas-controls" role="group" aria-label="Filter by fuel-cycle stage">
+    <div class="atlas-controls" role="group" aria-label="Layers">
+      <strong style="font-family:var(--sans)">Layers:</strong>
+      <label><input type="checkbox" data-layer="fissile" checked /> Enrichment &amp; reprocessing plants (IPFM, all states)</label>
+      <label><input type="checkbox" data-layer="military" checked /> State weapons-program sites (disclosed / published)</label>
+      <label><input type="checkbox" data-layer="civil" checked /> Civil facilities, interim (Wikidata coordinates)</label>
+    </div>
+    <div class="atlas-controls" role="group" aria-label="Filter the interim civil layer by fuel-cycle stage">
       <label><input type="checkbox" data-stage="reactor-power" checked /> Power reactors</label>
       <label><input type="checkbox" data-stage="reactor-research" checked /> Research reactors</label>
       <label><input type="checkbox" data-stage="enrichment" checked /> Enrichment</label>
@@ -37,13 +43,21 @@ import Explainer from '../../content/tools/atlas-explainer.md';
       <label>Country <input id="atlas-country" type="search" placeholder="filter by country" /></label>
     </div>
     <div id="atlas-map" class="atlas-map" role="region" aria-label="Interactive map of nuclear facilities. A table of the same entries follows."></div>
-    <p class="meta">Map tiles © <a href="https://openfreemap.org">OpenFreeMap</a>, © <a href="https://www.openmaptiles.org/">OpenMapTiles</a>, data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Facility data: Wikidata (CC0), each entry linked to its record.</p>
-    <details style="margin-top:1rem"><summary>Table view (all entries matching the filters)</summary>
+    <p class="meta">Map tiles © <a href="https://openfreemap.org">OpenFreeMap</a>, © <a href="https://www.openmaptiles.org/">OpenMapTiles</a>, data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. Facility data by layer: IPFM facility maps and tables (© International Panel on Fissile Materials, cited per entry); U.S. Department of Defense <em>Nuclear Matters Handbook</em> for the U.S. sites; Wikidata (CC0) for the interim civil layer and for coordinates of U.S. sites, each entry linked to its record.</p>
+    <details style="margin-top:1rem"><summary>Table view — interim civil layer (entries matching the filters)</summary>
       <div class="dc-tablewrap"><table id="atlas-table"><thead><tr><th>Name</th><th>Stage</th><th>Country</th><th>Status</th><th>First operation</th><th>Source</th></tr></thead><tbody></tbody></table></div>
     </details>
-    <h3>What this map is, and is not yet</h3>
+    <details style="margin-top:.5rem"><summary>Table view — enrichment and reprocessing plants (IPFM) and state weapons-program sites</summary>
+      <div class="dc-tablewrap"><table id="atlas-table-fm"><thead><tr><th>Name</th><th>Country</th><th>Stage / role</th><th>Designation</th><th>Status</th><th>Safeguards</th><th>Capacity</th><th>Source</th></tr></thead><tbody></tbody></table></div>
+    </details>
+    <details style="margin-top:.5rem"><summary>Register view — IAEA fuel-cycle facilities (NFCFDB) and research reactors (RRDB), <span id="reg-count">…</span> entries; coordinates pending review</summary>
+      <p class="meta">These are the official registers, re-served with their own fields. Coordinates are attached only through a reviewed crosswalk; until a person has confirmed a match, an entry is listed here and not drawn on the map. Filter: <input id="reg-filter" type="search" placeholder="country or name" /></p>
+      <div class="dc-tablewrap"><table id="atlas-table-reg"><thead><tr><th>Name</th><th>Register</th><th>Country</th><th>Type</th><th>Status</th><th>Capacity / power</th><th>Start</th><th>On map?</th></tr></thead><tbody></tbody></table></div>
+    </details>
+    <h3>How the layers are sourced</h3>
     <div class="prose">
-      <p>This is a first cut. Its facility list comes from Wikidata, which is complete for nuclear power stations, roughly half-complete for research reactors, and sparse for enrichment, reprocessing, mining and disposal sites. The authoritative registers — the IAEA's PRIS (power reactors), RRDB (research reactors) and NFCIS (fuel-cycle facilities), and the U.S. NRC's licensee lists — are the reconciliation sources, and each entry will carry its register identifier once that work is done. Military and defense-program facilities are deliberately not included in this cut — Wikidata's generic “nuclear facility” class, which mixes them in, is not used — and they will be added, if at all, as a separately reviewed layer drawn only from published compilations.</p>
+      <p><strong>Tiered provenance.</strong> Identity — that a facility exists, what it is, its status — comes only from an official register (tier 1: the IAEA's NFCFDB and RRDB exports, re-served in the register view) or, for the fissile-material and weapons-program layers, from a published compilation that names it (tier 2: the International Panel on Fissile Materials' facility maps and tables; the U.S. Department of Defense's <em>Nuclear Matters Handbook</em> for the eight U.S. Nuclear Security Enterprise sites; official, IPFM, Nuclear Notebook and decree-based sources for the other states' weapons-program sites). Crowd-sourced data (tier 3: Wikidata) is used only for coordinates, and only through a crosswalk that a person reviews; the interim civil layer is the earlier Wikidata build kept visible, labelled, until the register entries have reviewed coordinates.</p>
+      <p><strong>The weapons-program layer</strong> lists sites that a state has itself disclosed or that a standing published compilation places in a weapons program, with a plain description of role and status and nothing more — no protection, layout or inventory detail, and no facility whose existence rests on press reporting alone. Designations (military, dual-use, civilian, uncertain) are IPFM's own and are reproduced as given; where IPFM marks a plant as safeguarded it is because the state has placed it under IAEA safeguards. Beyond the IPFM rows and the U.S. complex, the layer carries production reactors (current and historical), weapons laboratories, assembly plants and test sites in the other eight states, each from a single cited source: a regulator's or agency's own page (ONR, CEA, DOE), an IPFM country page, the Bulletin's Nuclear Notebook, or Russia's Decree No. 556 of 2007 as compiled by Pavel Podvig. Where the only coordinate available is a city or commune centroid the popup says so; two sites with no defensible coordinate appear in the table only. Israel's entry follows its sources in describing, not asserting, a program the state neither confirms nor denies. The layer remains incomplete by design — a site is added when a source of that kind names it, not before.</p>
     </div>
   </section>
 </Base>
@@ -71,6 +85,17 @@ import Explainer from '../../content/tools/atlas-explainer.md';
   map.addControl(new maplibregl.AttributionControl({ compact: true }));
 
   function activeStages() { return [...document.querySelectorAll('[data-stage]')].filter((c) => c.checked).map((c) => c.dataset.stage); }
+  let fm = null, mapLoaded = false;
+  function addFm() {
+    if (!fm || !mapLoaded || map.getSource('fissile')) return;
+    map.addSource('fissile', { type: 'geojson', data: fm.fiss });
+    map.addLayer({ id: 'fissile', type: 'circle', source: 'fissile', paint: { 'circle-radius': 7, 'circle-color': ['match', ['get', 'stage'], 'enrichment', '#8a2b1d', 'reprocessing', '#5b3a8a', '#6b6560'], 'circle-stroke-color': '#f6f2ea', 'circle-stroke-width': 1.5 } });
+    map.addSource('military', { type: 'geojson', data: { type: 'FeatureCollection', features: fm.mil.features.filter((f) => f.geometry) } });
+    map.addLayer({ id: 'military', type: 'circle', source: 'military', paint: { 'circle-radius': 6, 'circle-color': '#f6f2ea', 'circle-stroke-color': '#1c1a17', 'circle-stroke-width': 2.5 } });
+    const fmPopup = (e) => { const p = e.features[0].properties; const prov = typeof p.prov === 'string' ? JSON.parse(p.prov)[0] : (p.prov || [])[0]; new maplibregl.Popup({ maxWidth: '300px' }).setLngLat(e.features[0].geometry.coordinates).setHTML(`<strong>${p.name}</strong><br>${p.country} · ${p.role || p.stage}${p.designation ? '<br>Designation: ' + p.designation : ''}${p.status ? '<br>Status: ' + p.status : ''}${p.safeguards ? '<br>IAEA safeguards: ' + p.safeguards : ''}${p.capacity ? '<br>Capacity: ' + p.capacity + ' ' + (p.capacity_unit || '') : ''}${p.description ? '<br>' + p.description : ''}<br><a href="${prov.url}">Source: ${prov.source}</a>${p.coord_source ? '<br><span class="meta">Coordinates: ' + p.coord_source + ' (tier ' + p.coord_tier + ')' + (p.coord_note ? '; ' + p.coord_note : '') + '</span>' : ''}`).addTo(map); };
+    map.on('click', 'fissile', fmPopup); map.on('click', 'military', fmPopup);
+    for (const l of ['fissile', 'military']) { map.on('mouseenter', l, () => (map.getCanvas().style.cursor = 'pointer')); map.on('mouseleave', l, () => (map.getCanvas().style.cursor = '')); }
+  }
   function filtered() {
     const st = new Set(activeStages()); const q = (document.getElementById('atlas-country').value || '').trim().toLowerCase();
     return data.features.filter((f) => st.has(f.properties.stage) && (!q || (f.properties.country || '').toLowerCase().includes(q)));
@@ -89,6 +114,13 @@ import Explainer from '../../content/tools/atlas-explainer.md';
   }
   async function loadData() {
     const r = await fetch('/data/facilities.geojson'); data = await r.json();
+    const [fiss, mil, reg] = await Promise.all(['/data/facilities_fissile.geojson', '/data/facilities_military.geojson', '/data/facilities_v2.geojson'].map((u) => fetch(u).then((x) => x.json())));
+    fm = { fiss, mil }; renderFm(fiss, mil); renderReg(reg); addFm();
+    document.querySelectorAll('[data-layer]').forEach((c) => c.addEventListener('change', () => {
+      const vis = (id, on) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
+      const l = document.querySelector('[data-layer="civil"]').checked, f = document.querySelector('[data-layer="fissile"]').checked, m = document.querySelector('[data-layer="military"]').checked;
+      ['clusters', 'cluster-count', 'points'].forEach((id) => vis(id, l)); vis('fissile', f); vis('military', m);
+    }));
     document.querySelectorAll('[data-stage]').forEach((c) => c.addEventListener('change', refresh));
     document.getElementById('atlas-country').addEventListener('input', refresh);
     refresh();
@@ -101,8 +133,23 @@ import Explainer from '../../content/tools/atlas-explainer.md';
     map.on('click', 'clusters', (e) => { const f = map.queryRenderedFeatures(e.point, { layers: ['clusters'] })[0]; map.getSource('fac').getClusterExpansionZoom(f.properties.cluster_id).then((z) => map.easeTo({ center: f.geometry.coordinates, zoom: z })); });
     map.on('click', 'points', (e) => { const p = e.features[0].properties; new maplibregl.Popup({ maxWidth: '280px' }).setLngLat(e.features[0].geometry.coordinates).setHTML(`<strong>${p.name}</strong><br>${LABEL[p.stage]}${p.country ? ' · ' + p.country : ''}${p.operator ? '<br>Operator: ' + p.operator : ''}${p.first_operation ? '<br>First operation: ' + p.first_operation : ''}${p.status ? '<br>Status: ' + p.status : ''}${p.closed ? '<br>Closed: ' + p.closed : ''}${p.capacity_mw ? '<br>Capacity: ' + p.capacity_mw + ' MW' : ''}<br><a href="${p.source_url}">Source: Wikidata ${p.id}</a>`).addTo(map); });
     for (const l of ['clusters', 'points']) { map.on('mouseenter', l, () => (map.getCanvas().style.cursor = 'pointer')); map.on('mouseleave', l, () => (map.getCanvas().style.cursor = '')); }
+    mapLoaded = true; addFm();
     if (data) refresh();
   });
+  function renderFm(fiss, mil) {
+    const tb = document.querySelector('#atlas-table-fm tbody'); tb.innerHTML = '';
+    const rows = [...fiss.features.map((f) => f.properties), ...mil.features.map((f) => ({ ...f.properties, _nomap: !f.geometry }))];
+    const seen = new Set();
+    for (const p of rows) { if (seen.has(p.id)) continue; seen.add(p.id); const prov = (p.prov || [])[0] || {}; const tr = document.createElement('tr'); tr.innerHTML = `<td>${p.name}${p._nomap ? ' <span class="meta">(table only — no coordinate assigned)</span>' : ''}</td><td>${p.country}</td><td>${p.role || p.stage}</td><td>${p.designation || ''}</td><td>${p.status || ''}</td><td>${p.safeguards || ''}</td><td>${p.capacity ? p.capacity + ' ' + (p.capacity_unit || '') : ''}</td><td><a href="${prov.url}">${prov.source || ''}</a></td>`; tb.appendChild(tr); }
+  }
+  function renderReg(reg) {
+    const tb = document.querySelector('#atlas-table-reg tbody'); const inp = document.getElementById('reg-filter');
+    document.getElementById('reg-count').textContent = reg.features.length.toLocaleString();
+    const draw = () => { const q = (inp.value || '').toLowerCase(); tb.innerHTML = ''; let n = 0;
+      for (const f of reg.features) { const p = f.properties; if (q && !((p.country || '').toLowerCase().includes(q) || (p.name || '').toLowerCase().includes(q))) continue; if (++n > 400) break;
+        const tr = document.createElement('tr'); tr.innerHTML = `<td>${p.name}</td><td>${p.id.split(':')[0]}</td><td>${p.country}</td><td>${p.subtype || ''}</td><td>${p.status || ''}</td><td>${p.capacity || (p.thermal_power_kw ? p.thermal_power_kw + ' kW(th)' : '')}</td><td>${p.start || ''}</td><td>${f.geometry ? 'proposed' : 'no'}</td>`; tb.appendChild(tr); } };
+    inp.addEventListener('input', draw); draw();
+  }
   map.on('error', (e) => { status.textContent = 'Map tiles could not be loaded; the table view below still works. ' + (e.error?.message || ''); });
   loadData().catch((e) => { status.textContent = 'Could not load facility data: ' + e.message; });
 </script>
