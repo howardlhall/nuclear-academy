@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const mods = (await getCollection('modules')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Modules">
+  <h1>Modules</h1>
+  <ul>
+    {mods.map((m) => (
+      <li><a href={`/modules/${m.id.replace(/\/index$/, '')}/`}>{m.data.title}</a> — {m.data.description}</li>
+    ))}
+  </ul>
+</Base>

@@ -1,0 +1,38 @@
+---
+interface Props { title: string; description?: string; }
+const { title, description = 'nuclear.academy — a nuclear security learning site.' } = Astro.props;
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · nuclear.academy</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <a class="brand" href="/">nuclear.academy</a>
+      <nav aria-label="Primary">
+        <a href="/modules/">Modules</a>
+        <a href="/tools/">Tools</a>
+        <a href="/glossary/">Glossary</a>
+        <a href="/sources/">Sources</a>
+        <a href="/about/">About</a>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer>
+      <p>© Howard L. Hall. Content and code licensed <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>.
+      Views expressed are the author's own and do not represent the University of Tennessee, the U.S. Department of Energy, or any sponsor.</p>
+      <p>Source: <a href="https://github.com/howardlhall/nuclear-academy">github.com/howardlhall/nuclear-academy</a>. No tracking cookies.</p>
+    </footer>
+  </body>
+</html>

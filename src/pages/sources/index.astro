@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const srcs = (await getCollection('sources')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<Base title="Source library">
+  <h1>Source library</h1>
+  <ol>
+    {srcs.map((s) => (
+      <li id={s.id}>
+        {s.data.authors && <span>{s.data.authors}. </span>}
+        <em>{s.data.title}</em>{s.data.venue && <span>, {s.data.venue}</span>}{s.data.year && <span> ({s.data.year})</span>}.
+        {s.data.doi && <span> <a href={`https://doi.org/${s.data.doi}`}>doi:{s.data.doi}</a></span>}
+        {!s.data.doi && s.data.url && <span> <a href={s.data.url}>{s.data.identifier ?? 'link'}</a></span>}
+      </li>
+    ))}
+  </ol>
+</Base>

@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const mods = await getCollection('modules');
+  return mods.map((m) => ({ params: { slug: m.id.replace(/\/index$/, '') }, props: { m } }));
+}
+const { m } = Astro.props;
+const { Content } = await render(m);
+---
+<Base title={m.data.title} description={m.data.description}>
+  <h1>{m.data.title}</h1>
+  <p class="lede">{m.data.description}</p>
+  {m.data.objectives.length > 0 && (
+    <section aria-labelledby="objectives">
+      <h2 id="objectives">Learning objectives</h2>
+      <ul>{m.data.objectives.map((o) => <li>{o}</li>)}</ul>
+    </section>
+  )}
+  <Content />
+</Base>

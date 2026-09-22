@@ -1,0 +1,15 @@
+# build output
+dist/
+.astro/
+# dependencies
+node_modules/
+# logs and OS debris
+npm-debug.log*
+.DS_Store
+*.fuse_hidden*
+# environment
+.env
+.env.*
+!.env.example
+# editor
+.vscode/

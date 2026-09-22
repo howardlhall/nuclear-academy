@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+const terms = (await getCollection('glossary')).sort((a, b) => a.data.term.localeCompare(b.data.term));
+const rendered = await Promise.all(terms.map(async (t) => ({ t, C: (await render(t)).Content })));
+---
+<Base title="Glossary">
+  <h1>Glossary</h1>
+  <dl>
+    {rendered.map(({ t, C }) => (
+      <>
+        <dt id={t.id}><strong>{t.data.term}</strong>{t.data.source && <span> — <small>{t.data.source}</small></span>}</dt>
+        <dd><C /></dd>
+      </>
+    ))}
+  </dl>
+</Base>
