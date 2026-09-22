@@ -235,10 +235,12 @@ access to nuclear technology, and by the creation of the International Atomic En
 (1957), which would verify its peaceful use.
 
 The treaty has slowed proliferation without stopping it. India tested in 1974 and called the
-device peaceful; Israel is universally understood to have acquired weapons around the same time
-the treaty was negotiated and has never acknowledged them; Pakistan tested in 1998; North Korea,
-having joined and then withdrawn from the treaty, tested in 2006. Nine states hold nuclear
-weapons today. Against that, the record also holds reversals: South Africa built a small arsenal,
+device peaceful; Pakistan tested in 1998; North Korea, having joined and then withdrawn from the
+treaty, tested in 2006. Israel is a case of its own: it is widely believed to have built weapons
+around the time the treaty was negotiated, and every public estimate counts it as a possessor,
+but it has never tested, never confirmed or denied having them, and maintains a deliberate
+policy of nuclear ambiguity — so the honest statement is that nine states are believed to hold
+nuclear weapons today, one of them without ever saying so [13]. Against that, the record also holds reversals: South Africa built a small arsenal,
 dismantled it, and joined the treaty in 1991; Belarus, Kazakhstan, and Ukraine gave up the Soviet
 weapons on their territory in the 1990s.
 
@@ -256,15 +258,20 @@ reminder that surety is a live problem for the states that possess these weapons
 one.
 
 The shape of today's arsenals, in structural terms: Russia and the United States hold the great
-majority of the world's warheads; China's arsenal is growing faster than any other [13]; the other six
-possessors hold arsenals in the tens to low hundreds. For three decades after 1991 the global
+majority of the world's warheads; China's arsenal is growing faster than any other [13]; the
+other six possessors hold arsenals in the tens to low hundreds. The two independent-looking
+counts a reader will meet — SIPRI's yearbook chapter and the *Bulletin of the Atomic Scientists*'
+Nuclear Notebook — are compiled by the same team at the Federation of American Scientists, so
+agreement between them is one estimate stated twice, not two estimates that agree [13]. For three decades after 1991 the global
 total fell as the two largest states dismantled retired weapons. That total is still falling, but
 only because of that dismantlement — the number of warheads in military stockpiles, the ones
 available for use, began rising again in the 2020s, and SIPRI expects that rise to continue and
 probably accelerate [13]. The last treaty limiting United States and Russian strategic forces,
 New START, expired on 5 February 2026 with no successor; its on-site inspections had already
 stopped in 2020 and its data exchanges in 2023, so the two largest arsenals are now unverified
-as well as unlimited [14]. The current figures, updated as they change, are on the
+as well as unlimited [14]. Since that date no treaty anywhere limits the size of any state's
+nuclear arsenal: China, France, and the United Kingdom were never bound by numerical limits, and
+the NPT's disarmament article sets a direction, not a ceiling. The current figures, updated as they change, are on the
 [situation page](/situation/nuclear-forces-and-arms-control/).
 
 **Explore.** (a) Which five states does the NPT recognize as nuclear-weapon states, and what is
@@ -469,7 +476,10 @@ specialist, and a purely policy specialist, would each miss about it.
 12. Arms Control Association, "2026 NPT Review Conference Stymied by Disputes," *Arms Control
     Today*, June 2026.
 13. Stockholm International Peace Research Institute, *SIPRI Yearbook 2026*, chapter 8, "World
-    nuclear forces" (figures as of January 2026).
+    nuclear forces" (H. M. Kristensen and M. Korda; figures as of January 2026); H. M. Kristensen,
+    M. Korda, E. Johns and M. Knight-Boyle, "Status of World Nuclear Forces," Federation of
+    American Scientists, as of early 2026, and the *Bulletin of the Atomic Scientists* Nuclear
+    Notebook series by the same authors (country columns 2025–2026).
 14. Arms Control Association, "New START Expires; U.S. Urges 'Modernized' Treaty," *Arms Control
     Today*, March 2026.
 15. International Institute for Strategic Studies, *Nuclear Black Markets: Pakistan, A. Q. Khan
