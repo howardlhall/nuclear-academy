@@ -10,6 +10,7 @@ import DecayPreview from '../components/DecayPreview.astro';
       <p class="lede">How the world keeps nuclear material where it belongs — the institutions, the physics, and the arguments — written for readers who want to understand the subject rather than be alarmed by it. And instruments you can explore yourself.</p>
       <p style="display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;margin-top:1.4rem">
         <a class="btn" href="/modules/nuclear-security-why-it-matters/">Begin with Module 1</a>
+        <a class="btn" style="background:none;color:var(--accent);border:1px solid var(--accent)" href="/foundations/">New to this? Start with the basics</a>
         <a class="link-more" href="/about/">What this site is, and is not →</a>
       </p>
     </div>
@@ -19,15 +20,15 @@ import DecayPreview from '../components/DecayPreview.astro';
   <section class="section cols-3">
     <div>
       <div class="kicker">Modules</div>
-      <h2 style="margin-top:0">Nuclear Security: Why It Matters</h2>
-      <p>Security, safety, safeguards, and surety — and why the words are confused across languages. What actually impedes proliferation. The terrain ahead.</p>
-      <a class="link-more" href="/modules/nuclear-security-why-it-matters/">Eight sections →</a>
+      <h2 style="margin-top:0">Five modules, from why it matters to how it is done</h2>
+      <p>Why nuclear security matters; the fuel cycle and where security lives in it; how safeguards verify without trust; nuclear forensics; and fusion, the technology the system was not built for.</p>
+      <a class="link-more" href="/modules/">The course of study →</a>
     </div>
     <div>
       <div class="kicker">Tools</div>
-      <h2 style="margin-top:0">Decay-chain calculator</h2>
-      <p>The Bateman equations, solved in your browser for any chain you choose — with the mathematics shown beside the plot, not hidden behind it.</p>
-      <a class="link-more" href="/tools/decay-chain/">Explore the calculator →</a>
+      <h2 style="margin-top:0">A chart of the nuclides and a decay calculator</h2>
+      <p>Every nuclide in the evaluated data, colored by how it decays — click one to follow its chain. Then the Bateman equations, solved in your browser for any chain you choose, with the mathematics shown.</p>
+      <a class="link-more" href="/tools/">Explore the tools →</a>
     </div>
     <div>
       <div class="kicker">Atlas</div>
@@ -38,8 +39,13 @@ import DecayPreview from '../components/DecayPreview.astro';
   </section>
 
   <section class="section">
+    <div class="kicker" style="color:var(--muted)">Open questions</div>
+    <p class="meta" style="max-width:var(--measure)">The policy arguments the field is having right now — each on one page, each side stated as its proponents make it. <a href="/questions/">Four questions so far →</a></p>
+  </section>
+
+  <section class="section">
     <div class="kicker" style="color:var(--muted)">Current situation</div>
-    <p class="meta" style="max-width:var(--measure)">Dated pages, kept separate from the modules and re-checked on the date shown. First page: <a href="/situation/nuclear-forces-and-arms-control/">nuclear forces, arms control, and verification</a>.</p>
+    <p class="meta" style="max-width:var(--measure)">Dated pages, kept separate from the modules and re-checked on the date shown. Two pages: <a href="/situation/nuclear-forces-and-arms-control/">nuclear forces, arms control, and verification</a> and <a href="/situation/us-spent-fuel-and-the-back-end/">the U.S. back end</a>.</p>
     <a class="link-more" href="/situation/">All situation pages →</a>
   </section>
 </Base>

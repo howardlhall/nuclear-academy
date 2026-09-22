@@ -6,7 +6,7 @@ import 'katex/dist/katex.min.css';
 const path = Astro.url.pathname;
 const nav = [
   ['/foundations/', 'Foundations'], ['/modules/', 'Modules'], ['/tools/', 'Tools'], ['/atlas/', 'Atlas'],
-  ['/situation/', 'Situation'], ['/glossary/', 'Glossary'], ['/sources/', 'Sources'], ['/about/', 'About'],
+  ['/questions/', 'Questions'], ['/situation/', 'Situation'], ['/glossary/', 'Glossary'], ['/sources/', 'Sources'], ['/about/', 'About'],
 ];
 const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---

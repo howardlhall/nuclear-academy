@@ -27,6 +27,18 @@ const foundations = defineCollection({
   }),
 });
 
+// Policy questions: one page per open question — summary, why it matters, what each side says, primary documents.
+const questions = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/questions' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number().default(0),
+    lastReviewed: z.string(),
+    modules: z.array(z.string()).default([]),
+  }),
+});
+
 // Dated pages: figures and statuses that change. Every page carries an as-of date.
 const situation = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/situation' }),
@@ -59,4 +71,4 @@ const sources = defineCollection({
   }),
 });
 
-export const collections = { modules, foundations, situation, glossary, sources };
+export const collections = { modules, foundations, questions, situation, glossary, sources };

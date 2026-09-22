@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const qs = (await getCollection('questions')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Open questions" description="The policy questions the field is arguing about right now, each on one page: what the question is, why it matters, what each side says, and where the primary documents are. The site takes no side.">
+  <div class="kicker">Questions</div>
+  <h1>Open questions</h1>
+  <p class="lede">One page per live policy question. Each states the question, why it matters, the strongest case on each side as its proponents make it, and the primary documents to read. The site does not take a side; it tries to make sure you can find the argument.</p>
+  <ul class="list-rule" style="margin-top:2rem">
+    {qs.map((q) => (
+      <li><span class="date">reviewed {q.data.lastReviewed}</span><span><a href={`/questions/${q.id}/`}>{q.data.title}</a><br /><span class="meta">{q.data.description}</span></span></li>
+    ))}
+  </ul>
+</Base>
