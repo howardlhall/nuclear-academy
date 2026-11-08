@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const qs = await getCollection('questions');
+  return qs.map((q) => ({ params: { slug: q.id }, props: { q } }));
+}
+const { q } = Astro.props;
+const { Content } = await render(q);
+---
+<Base title={q.data.title} description={q.data.description}>
+  <div class="kicker">Open question · reviewed {q.data.lastReviewed}</div>
+  <h1>{q.data.title}</h1>
+  <p class="lede">{q.data.description}</p>
+  <div class="prose"><Content /></div>
+  {q.data.modules.length > 0 && <p class="meta" style="margin-top:2rem">Background: {q.data.modules.map((m, i) => <span>{i > 0 && ' · '}<a href={`/modules/${m}/`}>{m.replace(/-/g, ' ')}</a></span>)}</p>}
+</Base>

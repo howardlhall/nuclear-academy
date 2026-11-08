@@ -1,0 +1,50 @@
+---
+/* Civil (peaceful) nuclear fuel cycle — inline SVG, theme-aware. Text equivalent follows in the page. */
+const W = 1180, H = 420;
+const box = (x, y, w, h, title, sub, accent = false) => `
+  <g>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="var(--card)" stroke="${accent ? 'var(--accent)' : 'var(--ink)'}" stroke-width="${accent ? 2 : 1.5}"/>
+    <text x="${x + w / 2}" y="${y + 26}" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="15" font-weight="600" fill="var(--ink)">${title}</text>
+    <text x="${x + w / 2}" y="${y + 46}" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--muted)">${sub}</text>
+  </g>`;
+const arrow = (x1, y1, x2, y2, label = '', dashed = false) => `
+  <path d="M${x1},${y1} L${x2},${y2}" fill="none" stroke="var(--ink)" stroke-width="1.5" marker-end="url(#ah)" ${dashed ? 'stroke-dasharray="5 4"' : ''}/>
+  ${label ? `<text x="${x1 === x2 ? x1 + 8 : (x1 + x2) / 2}" y="${(y1 + y2) / 2 - (x1 === x2 ? -4 : 8)}" text-anchor="${x1 === x2 ? 'start' : 'middle'}" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--muted)">${label}</text>` : ''}`;
+const bw = 146, bh = 62, y0 = 60, gap = 19;
+const xs = [20, 20 + (bw + gap), 20 + 2 * (bw + gap), 20 + 3 * (bw + gap), 20 + 4 * (bw + gap), 20 + 5 * (bw + gap), 20 + 6 * (bw + gap)];
+---
+<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="fc-civil-title fc-civil-desc" style="width:100%;height:auto;display:block">
+  <title id="fc-civil-title">The civil nuclear fuel cycle</title>
+  <desc id="fc-civil-desc">Mining and milling, conversion, enrichment to reactor grade, fuel fabrication, power reactor, spent-fuel storage, then either direct geological disposal (open cycle) or reprocessing with recycled uranium and plutonium returned to fuel fabrication (closed cycle).</desc>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+  <text x="20" y="30" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="var(--accent)">FRONT END</text>
+  <text x={xs[4] - 6} y="30" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="var(--accent)">REACTOR</text>
+  <text x={xs[5]} y="30" font-family="Source Sans 3, sans-serif" font-size="12" font-weight="600" letter-spacing="2" fill="var(--accent)">BACK END</text>
+  <Fragment set:html={
+    box(xs[0], y0, bw, bh, 'Mining & milling', 'ore → U₃O₈ “yellowcake”') +
+    box(xs[1], y0, bw, bh, 'Conversion', 'U₃O₈ → UF₆ gas') +
+    box(xs[2], y0, bw, bh, 'Enrichment', '0.7 % → 3–5 % U-235', true) +
+    box(xs[3], y0, bw, bh, 'Fuel fabrication', 'UO₂ pellets → assemblies') +
+    box(xs[4], y0, bw, bh, 'Power reactor', 'fission → heat → power') +
+    box(xs[5], y0, bw, bh, 'Spent-fuel storage', 'pool, then dry cask') +
+    box(xs[6], y0, bw, bh, 'Geological disposal', 'open cycle: once-through') +
+    arrow(xs[0] + bw, y0 + bh / 2, xs[1], y0 + bh / 2) +
+    arrow(xs[1] + bw, y0 + bh / 2, xs[2], y0 + bh / 2) +
+    arrow(xs[2] + bw, y0 + bh / 2, xs[3], y0 + bh / 2) +
+    arrow(xs[3] + bw, y0 + bh / 2, xs[4], y0 + bh / 2) +
+    arrow(xs[4] + bw, y0 + bh / 2, xs[5], y0 + bh / 2) +
+    arrow(xs[5] + bw, y0 + bh / 2, xs[6], y0 + bh / 2) +
+    /* closed cycle loop */
+    box(xs[5], 230, bw, bh, 'Reprocessing', 'separates U, Pu, waste', true) +
+    box(xs[3], 230, bw, bh, 'MOX / recycled fuel', 'Pu + U back into fuel') +
+    box(xs[6], 230, bw, bh, 'Vitrified waste', 'high-level waste → glass') +
+    arrow(xs[5] + bw / 2, y0 + bh, xs[5] + bw / 2, 230, 'closed cycle', true) +
+    arrow(xs[5], 230 + bh / 2, xs[3] + bw, 230 + bh / 2, 'recovered U and Pu', true) +
+    arrow(xs[3] + bw / 2, 230, xs[3] + bw / 2, y0 + bh, '', true) +
+    arrow(xs[5] + bw, 230 + bh / 2, xs[6], 230 + bh / 2, '', true) +
+    arrow(xs[6] + bw / 2, 230, xs[6] + bw / 2, y0 + bh, '', true)
+  } />
+  <text x="20" y="345" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="var(--muted)">Solid arrows: the once-through (open) cycle used in the United States and most of the world. Dashed: the closed cycle (France, Japan, Russia, the UK historically), which recycles uranium and plutonium.</text>
+  <text x="20" y="366" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="var(--muted)">Safeguards attention concentrates on the two accent-marked steps: enrichment (the same machines can go past reactor grade) and reprocessing (the only step that separates plutonium).</text>
+  <text x="20" y="400" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--muted)">Sources: IAEA Nuclear Fuel Cycle Information System definitions; World Nuclear Association, “The Nuclear Fuel Cycle”; U.S. NRC, “Stages of the Nuclear Fuel Cycle.”</text>
+</svg>

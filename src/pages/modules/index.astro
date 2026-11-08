@@ -3,11 +3,13 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 const mods = (await getCollection('modules')).sort((a, b) => a.data.order - b.data.order);
 ---
-<Base title="Modules">
-  <h1>Modules</h1>
-  <ul>
+<Base title="Modules" description="Modules of the nuclear.academy course of study.">
+  <div class="kicker">Modules</div>
+  <h1>Course of study</h1>
+  <p class="lede">Durable modules, each with stated objectives, numbered citations, and a self-check. Read in order or by interest.</p>
+  <ul class="list-rule" style="margin-top:2rem">
     {mods.map((m) => (
-      <li><a href={`/modules/${m.id.replace(/\/index$/, '')}/`}>{m.data.title}</a> — {m.data.description}</li>
+      <li><span class="date">Module {m.data.order}</span><span><a href={`/modules/${m.id.replace(/\/index$/, '')}/`}>{m.data.title}</a><br /><span class="meta">{m.data.description}</span></span></li>
     ))}
   </ul>
 </Base>

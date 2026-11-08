@@ -3,9 +3,10 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 const srcs = (await getCollection('sources')).sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
-<Base title="Source library">
+<Base title="Source library" description="Every source cited on the site, with a DOI or permanent link.">
+  <div class="kicker">Sources</div>
   <h1>Source library</h1>
-  <ol>
+  <ol class="prose">
     {srcs.map((s) => (
       <li id={s.id}>
         {s.data.authors && <span>{s.data.authors}. </span>}

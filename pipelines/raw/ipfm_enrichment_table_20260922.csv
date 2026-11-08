@@ -1,0 +1,25 @@
+country,facility,type,status,safeguards,capacity_tSWU
+Argentina,Pilcaniyeu,Civilian,Not operating,yes,(20)
+Brazil,Resende,Civilian,Expanding,yes,50
+China,Hanzhong (Shaanxi),Civilian,Operating,(yes),2700
+China,Lanzhou,Civilian,Operating,offered,4100-4600
+China,Emeishan,Civilian,Operating,no,3700-4200
+China,Heping,Dual-use,Operating,no,230
+France,Georges Besse II,Civilian,Expanding,yes,7500
+Germany,Gronau,Civilian,Expanding,yes,3600
+India,Ratehalli,Military,Operating,no,17-31
+Iran,Natanz,Civilian,Uncertain,yes,(48-60)
+Iran,Fordow,Civilian,Uncertain,yes,(11-18)
+Japan,Rokkasho,Civilian,Restarting,yes,150
+Netherlands,Almelo,Civilian,Expanding,yes,5100
+DPRK,Yongbyon,Uncertain,Operating,no,65-70
+DPRK,Kangson,Uncertain,Operating,no,30-35
+Pakistan,Kahuta,Military,Operating,no,30-45
+Pakistan,Gadwal,Military,Operating,no,?
+Russia,Angarsk,Civilian,Operating,no,4000
+Russia,Novouralsk,Civilian,Operating,no,13300
+Russia,Zelenogorsk,Civilian,Operating,no,7900
+Russia,Seversk,Civilian,Operating,no,3800
+United Kingdom,Capenhurst,Civilian,Expanding,yes,4500
+United States,"Eunice, NM (Urenco USA)",Civilian,Expanding,offered,4650
+United States,"Piketon, OH (Centrus)",Civilian,Expanding,no,[6-7]

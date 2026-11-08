@@ -9,13 +9,15 @@ const { m } = Astro.props;
 const { Content } = await render(m);
 ---
 <Base title={m.data.title} description={m.data.description}>
+  <div class="kicker">Module {m.data.order}</div>
   <h1>{m.data.title}</h1>
   <p class="lede">{m.data.description}</p>
   {m.data.objectives.length > 0 && (
-    <section aria-labelledby="objectives">
+    <section class="objectives" aria-labelledby="objectives">
       <h2 id="objectives">Learning objectives</h2>
-      <ul>{m.data.objectives.map((o) => <li>{o}</li>)}</ul>
+      <ul style="margin:0;padding-left:1.2em">{m.data.objectives.map((o) => <li>{o}</li>)}</ul>
     </section>
   )}
-  <Content />
+  <div class="prose"><Content /></div>
+  {m.data.lastReviewed && <p class="meta" style="margin-top:2rem">Last reviewed {m.data.lastReviewed}.</p>}
 </Base>

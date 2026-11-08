@@ -13,6 +13,43 @@ const modules = defineCollection({
   }),
 });
 
+// Foundations track: grades 8-12, nominal 10th-grade reading level. Same governance as modules.
+const foundations = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/foundations' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number().default(0),
+    status: z.enum(['draft', 'reviewed', 'screened', 'live']).default('draft'),
+    lastReviewed: z.string().optional(),
+    before: z.array(z.string()).default([]),
+    tool: z.string().optional(),
+  }),
+});
+
+// Policy questions: one page per open question — summary, why it matters, what each side says, primary documents.
+const questions = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/questions' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number().default(0),
+    lastReviewed: z.string(),
+    modules: z.array(z.string()).default([]),
+  }),
+});
+
+// Dated pages: figures and statuses that change. Every page carries an as-of date.
+const situation = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/situation' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    asOf: z.string(),
+    module: z.string().optional(),
+  }),
+});
+
 const glossary = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/glossary' }),
   schema: z.object({
@@ -34,4 +71,4 @@ const sources = defineCollection({
   }),
 });
 
-export const collections = { modules, glossary, sources };
+export const collections = { modules, foundations, questions, situation, glossary, sources };

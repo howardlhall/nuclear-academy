@@ -1,14 +1,51 @@
 ---
 import Base from '../layouts/Base.astro';
+import DecayPreview from '../components/DecayPreview.astro';
 ---
 <Base title="Home">
-  <h1>Nuclear security, taught from the open literature.</h1>
-  <p class="lede">Modules for people entering the nuclear profession, a glossary and source library, and
-  interactive tools that run in your browser. Built by Howard L. Hall, University of Tennessee.</p>
-  <ul>
-    <li><a href="/modules/">Modules</a> — starting with <em>Nuclear Security: Why It Matters</em>.</li>
-    <li><a href="/tools/">Tools</a> — a decay-chain (Bateman) calculator and a map of the civil nuclear fuel cycle.</li>
-    <li><a href="/glossary/">Glossary</a> and <a href="/sources/">source library</a>.</li>
-  </ul>
-  <p><em>Site under construction — first release in preparation.</em></p>
+  <section class="hero">
+    <div>
+      <div class="kicker">An open course of study</div>
+      <h1>Nuclear security, explained from the public record.</h1>
+      <p class="lede">How the world keeps nuclear material where it belongs — the institutions, the physics, and the arguments — written for readers who want to understand the subject rather than be alarmed by it. And instruments you can explore yourself.</p>
+      <p style="display:flex;gap:1.2rem;align-items:center;flex-wrap:wrap;margin-top:1.4rem">
+        <a class="btn" href="/modules/nuclear-security-why-it-matters/">Begin with Module 1</a>
+        <a class="btn" style="background:none;color:var(--accent);border:1px solid var(--accent)" href="/foundations/">New to this? Start with the basics</a>
+        <a class="link-more" href="/about/">What this site is, and is not →</a>
+      </p>
+    </div>
+    <DecayPreview />
+  </section>
+
+  <section class="section cols-3">
+    <div>
+      <div class="kicker">Modules</div>
+      <h2 style="margin-top:0">Five modules, from why it matters to how it is done</h2>
+      <p>Why nuclear security matters; the fuel cycle and where security lives in it; how safeguards verify without trust; nuclear forensics; and fusion, the technology the system was not built for.</p>
+      <a class="link-more" href="/modules/">The course of study →</a>
+    </div>
+    <div>
+      <div class="kicker">Tools</div>
+      <h2 style="margin-top:0">A chart of the nuclides and a decay calculator</h2>
+      <p>Every nuclide in the evaluated data, colored by how it decays — click one to follow its chain. Then the Bateman equations, solved in your browser for any chain you choose, with the mathematics shown.</p>
+      <a class="link-more" href="/tools/">Explore the tools →</a>
+    </div>
+    <div>
+      <div class="kicker">Atlas</div>
+      <h2 style="margin-top:0">The civil fuel cycle, on a map</h2>
+      <p>Reactors, enrichment, fabrication, and reprocessing plants from IAEA and NRC public data — each entry linked to the record it came from.</p>
+      <a class="link-more" href="/atlas/">Explore the map →</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="kicker" style="color:var(--muted)">Open questions</div>
+    <p class="meta" style="max-width:var(--measure)">The policy arguments the field is having right now — each on one page, each side stated as its proponents make it. <a href="/questions/">Four questions so far →</a></p>
+  </section>
+
+  <section class="section">
+    <div class="kicker" style="color:var(--muted)">Current situation</div>
+    <p class="meta" style="max-width:var(--measure)">Dated pages, kept separate from the modules and re-checked on the date shown. Two pages: <a href="/situation/nuclear-forces-and-arms-control/">nuclear forces, arms control, and verification</a> and <a href="/situation/us-spent-fuel-and-the-back-end/">the U.S. back end</a>.</p>
+    <a class="link-more" href="/situation/">All situation pages →</a>
+  </section>
 </Base>
